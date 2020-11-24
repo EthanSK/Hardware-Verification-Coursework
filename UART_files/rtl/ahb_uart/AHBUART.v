@@ -186,8 +186,10 @@ module AHBUART(
     .w_data(rx_data_parity[8:0]),
     .empty(rx_empty),
     .full(rx_full),
-    .r_data(uart_rdata_parity[8:0])
+    .r_data(uart_rdata_parity[8:0]) 
   );
+  
+  assign uart_rdata = uart_rdata_parity [7:0] //extract the actual data without parity so it can be sent to AHB interface
 
   
   //UART receiver

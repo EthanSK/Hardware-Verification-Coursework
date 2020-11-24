@@ -3,7 +3,7 @@
 //                                                                              //
 //Copyright (c) 2012, ARM All rights reserved.                                  //
 //                                                                              //
-//THIS END USER LICENCE AGREEMENT (“LICENCE”) IS A LEGAL AGREEMENT BETWEEN      //
+//THIS END USER LICENCE AGREEMENT (ï¿½LICENCEï¿½) IS A LEGAL AGREEMENT BETWEEN      //
 //YOU AND ARM LIMITED ("ARM") FOR THE USE OF THE SOFTWARE EXAMPLE ACCOMPANYING  //
 //THIS LICENCE. ARM IS ONLY WILLING TO LICENSE THE SOFTWARE EXAMPLE TO YOU ON   //
 //CONDITION THAT YOU ACCEPT ALL OF THE TERMS IN THIS LICENCE. BY INSTALLING OR  //
@@ -40,7 +40,7 @@ module UART_TX(
   input wire resetn,
   input wire tx_start,        
   input wire b_tick,          //baud rate tick
-  input wire [7:0] d_in,      //input data
+  input wire [8:0] d_in,      //input data
   output reg tx_done,         //transfer finished
   output wire tx              //output data to RS-232
   );
@@ -131,7 +131,7 @@ module UART_TX(
             begin
               b_next = 0;
               data_next = data_reg >> 1;
-              if(count_reg == 7)    //8 data bits
+              if(count_reg == 8)    //9 data bits
                 next_state = stop_st;
               else
                 count_next = count_reg + 1;

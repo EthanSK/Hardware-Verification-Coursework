@@ -3,7 +3,7 @@
 //                                                                              //
 //Copyright (c) 2012, ARM All rights reserved.                                  //
 //                                                                              //
-//THIS END USER LICENCE AGREEMENT (“LICENCE”) IS A LEGAL AGREEMENT BETWEEN      //
+//THIS END USER LICENCE AGREEMENT (ï¿½LICENCEï¿½) IS A LEGAL AGREEMENT BETWEEN      //
 //YOU AND ARM LIMITED ("ARM") FOR THE USE OF THE SOFTWARE EXAMPLE ACCOMPANYING  //
 //THIS LICENCE. ARM IS ONLY WILLING TO LICENSE THE SOFTWARE EXAMPLE TO YOU ON   //
 //CONDITION THAT YOU ACCEPT ALL OF THE TERMS IN THIS LICENCE. BY INSTALLING OR  //
@@ -40,9 +40,8 @@ module UART_RX(
   input wire resetn,
   input wire b_tick,        //Baud generator tick
   input wire rx,            //RS-232 data port
-  
   output reg rx_done,       //transfer completed
-  output wire [7:0] dout    //output data
+  output wire [8:0] dout    //output data
   );
 
 //STATE DEFINES  
@@ -114,7 +113,7 @@ module UART_RX(
             begin
               b_next = 0;
               data_next = {rx, data_reg [7:1]};
-              if(count_next ==7) // 8 Data bits
+              if(count_next ==8) // 9 Data bits
                 next_state = stop_st;
               else
                 count_next = count_reg + 1'b1;

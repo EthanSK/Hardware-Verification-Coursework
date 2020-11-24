@@ -113,7 +113,7 @@ module UART_RX(
             begin
               b_next = 0;
               data_next = {rx, data_reg [7:1]};
-              if(count_next ==8) // 9 Data bits
+              if(count_next == 8) // 9 Data bits
                 next_state = stop_st;
               else
                 count_next = count_reg + 1'b1;

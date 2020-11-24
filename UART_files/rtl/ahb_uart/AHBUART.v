@@ -3,7 +3,7 @@
 //                                                                              //
 //Copyright (c) 2012, ARM All rights reserved.                                  //
 //                                                                              //
-//THIS END USER LICENCE AGREEMENT (“LICENCE”) IS A LEGAL AGREEMENT BETWEEN      //
+//THIS END USER LICENCE AGREEMENT (ï¿½LICENCEï¿½) IS A LEGAL AGREEMENT BETWEEN      //
 //YOU AND ARM LIMITED ("ARM") FOR THE USE OF THE SOFTWARE EXAMPLE ACCOMPANYING  //
 //THIS LICENCE. ARM IS ONLY WILLING TO LICENSE THE SOFTWARE EXAMPLE TO YOU ON   //
 //CONDITION THAT YOU ACCEPT ALL OF THE TERMS IN THIS LICENCE. BY INSTALLING OR  //
@@ -55,7 +55,11 @@ module AHBUART(
   output wire        RsTx,  //Output to RS-232
   //UART Interrupt
   
-  output wire uart_irq  //Interrupt
+  output wire uart_irq,  //Interrupt
+
+  input wire is_even_parity, //1 for even parity 0 for odd
+  output wire PARITYERR,
+  output wire parity_err_count
 );
 
 //Internal Signals
@@ -63,6 +67,9 @@ module AHBUART(
   //Data I/O between AHB and FIFO
   wire [7:0] uart_wdata;  
   wire [7:0] uart_rdata;
+
+  wire [8:0] uart_wdata_parity;  
+
   
   //Signals from TX/RX to FIFOs
   wire uart_wr;
@@ -130,6 +137,25 @@ module AHBUART(
     .baudtick(b_tick)
   );
   
+  PARITY_GEN
+    #(.DATA_IN_WIDTH(8))
+  uPARITY_GEN
+  (
+      .is_even_parity(is_even_parity),
+      .data_in(uart_wdata[7:0]),
+      .data_out(uart_wdata_parity[8:0])
+  );   
+  
+
+  PARITY_CHECK
+    #(.ORIG_DATA_IN_WIDTH(8))
+  uPARITY_CHECK
+  (
+      .is_even_parity(is_even_parity),
+      .data_in_parity(9'b010101010),
+      .PARITYERR(PARITYERR)
+  );    
+
   //Transmitter FIFO
   FIFO  
    #(.DWIDTH(8), .AWIDTH(4))
@@ -139,7 +165,7 @@ module AHBUART(
     .resetn(HRESETn),
     .rd(tx_done),
     .wr(uart_wr),
-    .w_data(uart_wdata[7:0]),
+    .w_data(uart_wdata_parity[8:0]),
     .empty(tx_empty),
     .full(tx_full),
     .r_data(tx_data[7:0])
@@ -158,6 +184,7 @@ module AHBUART(
     .full(rx_full),
     .r_data(uart_rdata[7:0])
   );
+
   
   //UART receiver
   UART_RX uUART_RX(
@@ -180,6 +207,5 @@ module AHBUART(
     .tx(RsTx)
   );
  
- 
-  
+
 endmodule

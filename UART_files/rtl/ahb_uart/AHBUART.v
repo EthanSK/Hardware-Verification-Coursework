@@ -59,7 +59,7 @@ module AHBUART(
 
   input wire is_even_parity, //1 for even parity 0 for odd
   output wire PARITYERR,
-  output wire parity_err_count
+  output reg [31:0] parity_err_count
 );
 
 //Internal Signals
@@ -103,6 +103,7 @@ module AHBUART(
   reg last_HWRITE;
   reg last_HSEL;
   
+  reg [31:0] parity_err_count_next;
   
 //Set Registers for AHB Address State
   always@ (posedge HCLK)
@@ -113,6 +114,7 @@ module AHBUART(
       last_HWRITE <= HWRITE;
       last_HSEL <= HSEL;
       last_HADDR <= HADDR;
+      parity_err_count <= parity_err_count_next;
     end
   end
   
@@ -188,10 +190,17 @@ module AHBUART(
     .full(rx_full),
     .r_data(uart_rdata_parity[8:0]) 
   );
-  
-  assign uart_rdata = uart_rdata_parity [7:0] //extract the actual data without parity so it can be sent to AHB interface
 
-  
+  assign uart_rdata = uart_rdata_parity [7:0]; //extract the actual data without parity so it can be sent to AHB interface
+
+  always @*
+  begin 
+    parity_err_count_next = parity_err_count;
+    if (PARITYERR)
+      begin
+        parity_err_count_next = parity_err_count + 1;
+      end
+  end
   //UART receiver
   UART_RX uUART_RX(
     .clk(HCLK),
@@ -212,6 +221,7 @@ module AHBUART(
     .tx_done(tx_done),
     .tx(RsTx)
   );
- 
+
+  
 
 endmodule

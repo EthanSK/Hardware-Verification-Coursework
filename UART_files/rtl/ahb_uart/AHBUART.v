@@ -69,6 +69,7 @@ module AHBUART(
   wire [7:0] uart_rdata;
 
   wire [8:0] uart_wdata_parity;  
+  wire [8:0] uart_rdata_parity;  
 
   
   //Signals from TX/RX to FIFOs
@@ -79,7 +80,10 @@ module AHBUART(
   wire [7:0] tx_data;
   wire [7:0] rx_data;
   wire [7:0] status;
-  
+
+  wire [8:0] rx_data_parity;
+  wire [8:0] tx_data_parity;
+
   //FIFO Status
   wire tx_full;
   wire tx_empty;
@@ -152,13 +156,13 @@ module AHBUART(
   uPARITY_CHECK
   (
       .is_even_parity(is_even_parity),
-      .data_in_parity(9'b010101010),
+      .data_in_parity(uart_rdata_parity[8:0]),
       .PARITYERR(PARITYERR)
   );    
 
   //Transmitter FIFO
   FIFO  
-   #(.DWIDTH(8), .AWIDTH(4))
+   #(.DWIDTH(9), .AWIDTH(4))
 	uFIFO_TX 
   (
     .clk(HCLK),
@@ -168,21 +172,21 @@ module AHBUART(
     .w_data(uart_wdata_parity[8:0]),
     .empty(tx_empty),
     .full(tx_full),
-    .r_data(tx_data[7:0])
+    .r_data(tx_data_parity[8:0])
   );
   
   //Receiver FIFO
   FIFO 
-   #(.DWIDTH(8), .AWIDTH(4))
+   #(.DWIDTH(9), .AWIDTH(4))
 	uFIFO_RX(
     .clk(HCLK),
     .resetn(HRESETn),
     .rd(uart_rd),
     .wr(rx_done),
-    .w_data(rx_data[7:0]),
+    .w_data(rx_data_parity[8:0]),
     .empty(rx_empty),
     .full(rx_full),
-    .r_data(uart_rdata[7:0])
+    .r_data(uart_rdata_parity[8:0])
   );
 
   
@@ -193,7 +197,7 @@ module AHBUART(
     .b_tick(b_tick),
     .rx(RsRx),
     .rx_done(rx_done),
-    .dout(rx_data[7:0])
+    .dout(rx_data_parity[8:0])
   );
   
   //UART transmitter
@@ -202,7 +206,7 @@ module AHBUART(
     .resetn(HRESETn),
     .tx_start(!tx_empty),
     .b_tick(b_tick),
-    .d_in(tx_data[7:0]),
+    .d_in(tx_data_parity[8:0]),
     .tx_done(tx_done),
     .tx(RsTx)
   );

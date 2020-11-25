@@ -60,7 +60,6 @@ module AHBUART(
   input wire is_even_parity, //1 for even parity 0 for odd
   input wire parity_fault_injection, //0 for no fault, 1 for fault
   output wire PARITYERR,
-  output reg [15:0] parity_err_count //should be 16 bits (from lecture)
 );
 
 //Internal Signals
@@ -80,7 +79,7 @@ module AHBUART(
   //wires between FIFO and TX/RX
   wire [7:0] tx_data;
   wire [7:0] rx_data;
-  wire [7:0] status;
+  wire [31:0] status;
 
   wire [8:0] rx_data_parity;
   wire [8:0] tx_data_parity;
@@ -104,7 +103,8 @@ module AHBUART(
   reg last_HWRITE;
   reg last_HSEL;
   
-  reg [31:0] parity_err_count_next;
+  reg [15:0] parity_err_count; 
+  reg [15:0] parity_err_count_next;
   
 //Set Registers for AHB Address State
   always@ (posedge HCLK)
@@ -133,7 +133,7 @@ module AHBUART(
   
 
   assign HRDATA = (last_HADDR[7:0]==8'h00) ? {24'h0000_00,uart_rdata}:{24'h0000_00,status};
-  assign status = {6'b000000,tx_full,rx_empty};
+  assign status = {parity_err_count,14'b0,tx_full,rx_empty};
   
   assign uart_irq = ~rx_empty; 
   

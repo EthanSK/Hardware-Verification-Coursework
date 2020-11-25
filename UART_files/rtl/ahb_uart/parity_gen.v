@@ -11,7 +11,7 @@ module PARITY_GEN
     output wire [DATA_IN_WIDTH:0] data_out
 );
 
-wire parity_bit
+wire parity_bit;
 
 assign parity_bit = 
     is_even_parity 

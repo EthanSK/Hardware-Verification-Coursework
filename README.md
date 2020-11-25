@@ -16,3 +16,9 @@ add wave *
 
 
 restart -f after changing files https://stackoverflow.com/questions/5265807/how-to-restart-a-verilog-simulation-in-modelsim
+
+
+
+-----------------------------
+- make tests for the parity stuff
+- use fault injection for it

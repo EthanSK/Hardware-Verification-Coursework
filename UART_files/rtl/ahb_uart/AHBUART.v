@@ -60,7 +60,7 @@ module AHBUART(
   input wire is_even_parity, //1 for even parity 0 for odd
   input wire parity_fault_injection, //0 for no fault, 1 for fault
   output wire PARITYERR,
-  output reg [31:0] parity_err_count
+  output reg [15:0] parity_err_count //should be 16 bits (from lecture)
 );
 
 //Internal Signals
@@ -150,6 +150,7 @@ module AHBUART(
   (
       .is_even_parity(is_even_parity),
       .data_in(uart_wdata[7:0]),
+      .parity_fault_injection(parity_fault_injection),
       .data_out(uart_wdata_parity[8:0])
   );   
   
@@ -159,13 +160,8 @@ module AHBUART(
   uPARITY_CHECK
   (
       .is_even_parity(is_even_parity),
-      .data_in_parity(
-        parity_fault_injection
-        ?
-        {~uart_rdata_parity[8],uart_rdata_parity[7:0]} //flip the parity bit
-        :
-        uart_rdata_parity[8:0]
-        ),
+      .data_in_parity(uart_rdata_parity[8:0]),
+      .parity_fault_injection(parity_fault_injection),
       .PARITYERR(PARITYERR)
   );    
 

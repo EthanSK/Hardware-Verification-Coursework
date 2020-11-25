@@ -6,16 +6,23 @@ module PARITY_GEN
 (
     input wire is_even_parity, //1 for even 0 for odd
     input wire [DATA_IN_WIDTH-1:0] data_in,
+    input wire parity_fault_injection,
 
     output wire [DATA_IN_WIDTH:0] data_out
 );
 
-assign data_out = { 
+wire parity_bit
+
+assign parity_bit = 
     is_even_parity 
     ?
     ^data_in[DATA_IN_WIDTH-1:0]
     :
-    ~(^data_in[DATA_IN_WIDTH-1:0]), 
+    ~(^data_in[DATA_IN_WIDTH-1:0]);
+
+assign data_out = { 
+    parity_fault_injection ? ~parity_bit : parity_bit
+    ,
     data_in[DATA_IN_WIDTH-1:0]
     };
 

@@ -59,7 +59,7 @@ module AHBUART(
 
   input wire is_even_parity, //1 for even parity 0 for odd
   input wire parity_fault_injection, //0 for no fault, 1 for fault
-  output wire PARITYERR,
+  output wire PARITYERR
 );
 
 //Internal Signals

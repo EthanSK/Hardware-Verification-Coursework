@@ -19,5 +19,6 @@ class driver;
             while(!vif.tx_done) @(posedge vif.clk); //wait for transmitter to complete
             ->drv_done; //now we know the transmitter is done, we can raise the drv_done event to signal for a new transaction to send over
             vif.tx_start <= 0;
+        end
     endtask
 endclass

@@ -5,6 +5,9 @@ package pkg;
     `include "monitor.sv"
     `include "scoreboard.sv"
     `include "environment.sv"
-    `include "test.sv"
-endpackage : pkg
-    `include "interface.sv"
+    `include "test.sv" 
+ 
+endpackage
+
+// `include "interface.sv"
+

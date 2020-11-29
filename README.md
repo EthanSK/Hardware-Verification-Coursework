@@ -13,6 +13,9 @@
 
   `vlog -work work +acc=blnr -noincr -timescale 1ns/1ps tbench/ahb_uart/uart_tx/pkg.sv  tbench/ahb_uart/uart_tx/*.sv`
 
+  this works now
+  `vlog -work work +acc=blnr -noincr -timescale 1ns/1ps  tbench/ahb_uart/uart_tx/**`
+
 # to set a clock input, right click on it in the wave window and click clock
 
 https://people.ece.cornell.edu/land/courses/ece5760/ModelSim/Using_ModelSim.pdf

@@ -1,4 +1,4 @@
-import pkg:test;
+import pkg::test;
 
 module testbench;
     reg clk;
@@ -17,11 +17,12 @@ module testbench;
     );
 
     initial begin
+        automatic test t = new;        
+
         clk <= 0;
         intf.resetn <= 0;
         intf.tx_start <= 0;
 
-        test t = new;        
         t.env.vif = intf;
         t.run();
 

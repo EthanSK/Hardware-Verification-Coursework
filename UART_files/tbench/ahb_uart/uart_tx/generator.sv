@@ -8,11 +8,11 @@ class generator;
     task run();
         for (int i = 0; i < num_tests; i++) begin
             transaction tr = new;
-            tr.randomize();
-            $display ("T=%0t [Generator] Created transaction at index %0d", $time, num_tests)
+            void'(tr.randomize());
+            $display ("T=%0t [Generator] Created transaction at index %0d", $time, num_tests);
             drv_mbx.put(tr);
-            @(drv_done)
+            @(drv_done);
         end
-        $display ("T=%0t [Generator] Done generation of %0d transactions", $time, num_tests)
+        $display ("T=%0t [Generator] Done generation of %0d transactions", $time, num_tests);
     endtask
 endclass

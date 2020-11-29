@@ -11,11 +11,13 @@ class driver;
         forever begin
             transaction t;
             $display ("T=%0t [Driver] Driver waiting for item...", $time);
-            drv_mbx.get(t);
+            drv_mbx.get(t); //blocks until next item is present
             t.print("Driver");
             vif.d_in <= t.d_in;
             vif.tx_start <= 1;
             @(posedge vif.clk);
-            ->drv_done;
+            while(!vif.tx_done) @(posedge vif.clk); //wait for transmitter to complete
+            ->drv_done; //now we know the transmitter is done, we can raise the drv_done event to signal for a new transaction to send over
+            vif.tx_start <= 0;
     endtask
 endclass

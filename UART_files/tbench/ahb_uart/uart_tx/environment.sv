@@ -9,7 +9,7 @@ class uart_tx_environment;
     mailbox scb_mbx;
     mailbox drv_mbx;
 
-    virtual uart_tx__if vif;
+    virtual uart_tx_if vif;
     event drv_done;
 
     function new();

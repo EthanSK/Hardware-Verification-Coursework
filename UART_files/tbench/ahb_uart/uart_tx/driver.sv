@@ -3,7 +3,7 @@ import pkg::uart_tx_transaction;
 class uart_tx_driver;
     mailbox drv_mbx;
     event drv_done;
-    virtual uart_tx__if vif;
+    virtual uart_tx_if vif;
 
     task run();
         $display ("T=%0t [Driver] Driver is starting...", $time);

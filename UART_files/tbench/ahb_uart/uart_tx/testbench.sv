@@ -4,7 +4,7 @@ module uart_tx_testbench;
     reg clk;
     reg baud_tick;
 
-    uart_tx__if intf(clk, baud_tick);
+    uart_tx_if intf(clk, baud_tick);
 
     UART_TX DUT (
         .clk(clk),

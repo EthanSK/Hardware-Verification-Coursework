@@ -132,7 +132,7 @@ module AHBUART(
   assign uart_rd = last_HTRANS[1] & ~last_HWRITE & last_HSEL & (last_HADDR[7:0]==8'h00);
   
 
-  assign HRDATA = (last_HADDR[7:0]==8'h00) ? {24'h0000_00,uart_rdata}:{24'h0000_00,status};
+  assign HRDATA = (last_HADDR[7:0]==8'h00) ? {24'h0000_00,uart_rdata}:status;
   assign status = {parity_err_count,14'b0,tx_full,rx_empty};
   
   assign uart_irq = ~rx_empty; 
@@ -141,6 +141,7 @@ module AHBUART(
   BAUDGEN uBAUDGEN(
     .clk(HCLK),
     .resetn(HRESETn),
+    .baud_rate(17'd19200),
     .baudtick(b_tick)
   );
   

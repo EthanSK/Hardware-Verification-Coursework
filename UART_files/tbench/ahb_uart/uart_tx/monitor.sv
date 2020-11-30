@@ -1,7 +1,7 @@
 import pkg::uart_tx_transaction;
 
 class uart_tx_monitor
-#(parameter TX_OUT_SIZE=9)
+#(parameter TX_OUT_SIZE=9) //number of bits in tx output
 ;
     virtual uart_tx_if vif;
     mailbox scb_mbx;

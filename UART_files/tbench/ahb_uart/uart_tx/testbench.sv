@@ -4,16 +4,27 @@ module uart_tx_testbench;
     reg clk;
     reg baud_tick;
 
-    uart_tx_if intf(clk, baud_tick);
+    uart_tx_if _if(clk, baud_tick);
+
+    always #10ns clk = ~clk; //50 mhz clock
+
+    BAUDGEN 
+    #(.CLOCK_HZ(50_000_000))
+    uBAUDGEN(
+        .clk(clk),
+        .resetn(_if.resetn),
+        .baud_rate(17'd19200),
+        .baudtick(baud_tick)
+    );
 
     UART_TX DUT (
         .clk(clk),
-        .resetn(intf.resetn),
-        .tx_start(intf.tx_start),
+        .resetn(_if.resetn),
+        .tx_start(_if.tx_start),
         .b_tick(baud_tick),
-        .d_in(intf.d_in),
-        .tx_done(intf.tx_done),
-        .tx(intf.tx)
+        .d_in(_if.d_in),
+        .tx_done(_if.tx_done),
+        .tx(_if.tx)
     );
 
     initial begin
@@ -22,12 +33,13 @@ module uart_tx_testbench;
         $display ("T=%0t [Testbench] Testbench starting...", $time);
 
         clk <= 0;
-        intf.resetn <= 0;
-        intf.tx_start <= 0;
-        #40 intf.resetn <= 1;
+        _if.resetn <= 0;
+        _if.tx_start <= 0;
+        #40 _if.resetn <= 1;
+        #40 _if.resetn <= 0;
 
 
-        t.env.vif = intf;
+        t.env.vif = _if;
         t.run();
 
         #1000ns;

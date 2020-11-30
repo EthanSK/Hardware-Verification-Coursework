@@ -35,10 +35,10 @@ class uart_tx_environment;
         mon.vif = vif;
 
         fork
-            gen.run();
             drv.run();
             mon.run();
             scb.run();
+            gen.run();
         join_any
     endtask
 endclass

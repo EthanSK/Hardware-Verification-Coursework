@@ -1,15 +1,15 @@
-import pkg::transaction;
+import pkg::uart_tx_transaction;
 
-class driver;
+class uart_tx_driver;
     mailbox drv_mbx;
     event drv_done;
-    virtual _if vif;
+    virtual uart_tx__if vif;
 
     task run();
         $display ("T=%0t [Driver] Driver is starting...", $time);
 
         forever begin
-            transaction t;
+            uart_tx_transaction t;
             $display ("T=%0t [Driver] Driver waiting for item...", $time);
             drv_mbx.get(t); //blocks until next item is present
             t.print("Driver");

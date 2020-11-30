@@ -57,8 +57,8 @@ module UART_RX(
   reg [3:0] b_next;
   reg [3:0] count_reg; //data-bit counter
   reg [3:0] count_next;
-  reg [7:0] data_reg; //data register
-  reg [7:0] data_next;
+  reg [8:0] data_reg; //data register
+  reg [8:0] data_next;
   
 //State Machine  
   always @ (posedge clk, negedge resetn)
@@ -112,7 +112,7 @@ module UART_RX(
           if(b_reg == 15)
             begin
               b_next = 0;
-              data_next = {rx, data_reg [7:1]};
+              data_next = {rx, data_reg [8:1]};
               if(count_next == 8) // 9 Data bits
                 next_state = stop_st;
               else

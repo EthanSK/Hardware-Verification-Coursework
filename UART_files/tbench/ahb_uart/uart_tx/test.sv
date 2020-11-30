@@ -1,13 +1,13 @@
-import pkg::environment;
+import pkg::uart_tx_environment;
 
-class test;
-    environment env;
+class uart_tx_test;
+    uart_tx_environment env;
 
     function new();
         env = new;
      endfunction
 
     task run();
-        env.run();      
+        env.run();
     endtask     
 endclass

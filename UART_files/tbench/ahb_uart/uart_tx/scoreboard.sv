@@ -1,14 +1,14 @@
-import pkg::transaction;
+import pkg::uart_tx_transaction;
 
 
-class scoreboard;
+class uart_tx_scoreboard;
     mailbox scb_mbx;
     int num_passed = 0;
     int num_failed = 0;
 
     task run();
         forever begin
-            transaction t;
+            uart_tx_transaction t;
             scb_mbx.get(t);
             t.print("Scoreboard");
             if (t.d_in == t.d_out) begin

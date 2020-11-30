@@ -59,8 +59,8 @@ module UART_TX(
   reg [3:0] b_next;
   reg [3:0] count_reg;      //data bit counter
   reg [3:0] count_next;
-  reg [7:0] data_reg;       //data register
-  reg [7:0] data_next;
+  reg [8:0] data_reg;       //data register
+  reg [8:0] data_next;
   reg tx_reg;               //output data reg
   reg tx_next;
   

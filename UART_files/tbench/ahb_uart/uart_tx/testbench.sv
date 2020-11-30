@@ -1,10 +1,10 @@
-import pkg::test;
+import pkg::uart_tx_test;
 
 module uart_tx_testbench;
     reg clk;
     reg baud_tick;
 
-    _if intf(clk, baud_tick);
+    uart_tx__if intf(clk, baud_tick);
 
     UART_TX DUT (
         .clk(clk),
@@ -17,7 +17,7 @@ module uart_tx_testbench;
     );
 
     initial begin
-        automatic test t = new;        
+        automatic uart_tx_test t = new;        
 
         $display ("T=%0t [Testbench] Testbench starting...", $time);
 

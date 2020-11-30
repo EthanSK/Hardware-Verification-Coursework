@@ -1,15 +1,15 @@
 import pkg::*; //have to import * - importing each one manually gives errors about not being able to find it
 
-class environment;
-    scoreboard scb;
-    monitor mon;
-    driver drv;
-    generator gen;
+class uart_tx_environment;
+    uart_tx_scoreboard scb;
+    uart_tx_monitor mon;
+    uart_tx_driver drv;
+    uart_tx_generator gen;
 
     mailbox scb_mbx;
     mailbox drv_mbx;
 
-    virtual _if vif;
+    virtual uart_tx__if vif;
     event drv_done;
 
     function new();

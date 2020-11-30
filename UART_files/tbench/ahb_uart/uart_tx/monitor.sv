@@ -1,6 +1,6 @@
-import pkg::transaction;
+import pkg::uart_tx_transaction;
 
-class monitor
+class uart_tx_monitor
 #(parameter TX_OUT_SIZE=9)
 ;
     virtual _if vif;
@@ -12,7 +12,7 @@ class monitor
         forever begin
             @ (posedge vif.clk);
             if (vif.tx_start) begin
-                transaction t = new; //needs to be declared here or weird error
+                uart_tx_transaction t = new; //needs to be declared here or weird error
                 logic [TX_OUT_SIZE-1:0] d_out; //tx output with parity
                 @ (posedge vif.clk);
                 for (int i = 0; i < TX_OUT_SIZE; i++) begin

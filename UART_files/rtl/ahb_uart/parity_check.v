@@ -8,30 +8,35 @@ module PARITY_CHECK
     output wire PARITYERR
 );
 
-wire [ORIG_DATA_IN_WIDTH:0] d_in_parity_with_fault_inj; //data_in_parity with fault injection
-
-assign d_in_parity_with_fault_inj = 
-    parity_fault_injection
-    ?
-    {~data_in_parity[ORIG_DATA_IN_WIDTH], data_in_parity[ORIG_DATA_IN_WIDTH-1:0]} //flip the parity bit
-    :
-    data_in_parity[ORIG_DATA_IN_WIDTH:0]
-    ;
- 
- 
-assign PARITYERR =
-    (
-    is_even_parity
-    ? 
-    ^d_in_parity_with_fault_inj[ORIG_DATA_IN_WIDTH-1:0]
-    :
-    ~(^d_in_parity_with_fault_inj[ORIG_DATA_IN_WIDTH-1:0])
-    )
-    != 
-    d_in_parity_with_fault_inj[ORIG_DATA_IN_WIDTH]
-    ;
+ assign PARITYERR = fault_inject ^ ((^data_in_parity[DATA_WIDTH:0]) ^ is_even_parity);
 
 endmodule
+
+
+// wire [ORIG_DATA_IN_WIDTH:0] d_in_parity_with_fault_inj; //data_in_parity with fault injection
+
+// assign d_in_parity_with_fault_inj = 
+//     parity_fault_injection
+//     ?
+//     {~data_in_parity[ORIG_DATA_IN_WIDTH], data_in_parity[ORIG_DATA_IN_WIDTH-1:0]} //flip the parity bit
+//     :
+//     data_in_parity[ORIG_DATA_IN_WIDTH:0]
+//     ;
+ 
+ 
+// assign PARITYERR =
+//     (
+//     is_even_parity
+//     ? 
+//     ^d_in_parity_with_fault_inj[ORIG_DATA_IN_WIDTH-1:0]
+//     :
+//     ~(^d_in_parity_with_fault_inj[ORIG_DATA_IN_WIDTH-1:0])
+//     )
+//     != 
+//     d_in_parity_with_fault_inj[ORIG_DATA_IN_WIDTH]
+//     ;
+
+// endmodule
 
 // module paritychecktest();
 

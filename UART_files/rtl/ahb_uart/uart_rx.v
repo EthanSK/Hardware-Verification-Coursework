@@ -55,8 +55,8 @@ module UART_RX(
   reg [1:0] next_state;
   reg [3:0] b_reg; //baud-rate/over sampling counter
   reg [3:0] b_next;
-  reg [2:0] count_reg; //data-bit counter
-  reg [2:0] count_next;
+  reg [3:0] count_reg; //data-bit counter
+  reg [3:0] count_next;
   reg [7:0] data_reg; //data register
   reg [7:0] data_next;
   

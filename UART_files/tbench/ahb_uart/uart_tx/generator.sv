@@ -9,7 +9,7 @@ class generator;
         for (int i = 0; i < num_tests; i++) begin
             transaction tr = new;
             void'(tr.randomize());
-            $display ("T=%0t [Generator] Created transaction at index %0d", $time, num_tests);
+            $display ("T=%0t [Generator] Created transaction at index %0d", $time, i);
             drv_mbx.put(tr);
             @(drv_done);
         end

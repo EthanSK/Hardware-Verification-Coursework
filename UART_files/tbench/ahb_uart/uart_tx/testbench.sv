@@ -1,6 +1,6 @@
 import pkg::test;
 
-module testbench;
+module uart_tx_testbench;
     reg clk;
     reg baud_tick;
 
@@ -8,7 +8,7 @@ module testbench;
 
     UART_TX DUT (
         .clk(clk),
-        .resetn(intf.rst_n),
+        .resetn(intf.resetn),
         .tx_start(intf.tx_start),
         .b_tick(baud_tick),
         .d_in(intf.d_in),
@@ -19,13 +19,19 @@ module testbench;
     initial begin
         automatic test t = new;        
 
+        $display ("T=%0t [Testbench] Testbench starting...", $time);
+
         clk <= 0;
         intf.resetn <= 0;
         intf.tx_start <= 0;
+        #40 intf.resetn <= 1;
+
 
         t.env.vif = intf;
         t.run();
 
-        #1000 $finish;
+        #1000ns;
+        $display ("T=%0t [Testbench] Testbench finishing...", $time);
+        $finish;
     end
 endmodule

@@ -10,6 +10,6 @@ class transaction;
     // endfunction
  
     function void print(string tag="");
-        $display ("T=%0t %s d_in=0x%0h d_out=0x%0h", $time, tag, d_in, d_out);
+        $display ("T=%0t [Transaction] (Tag: %s)  d_in=0x%0h d_out=0x%0h", $time, tag, d_in, d_out);
     endfunction
 endclass

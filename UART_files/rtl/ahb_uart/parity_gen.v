@@ -11,20 +11,20 @@ module PARITY_GEN
     output wire [DATA_IN_WIDTH:0] data_out
 );
  
-assign data_out = ^data_in[DATA_IN_WIDTH-1:0] ~^ is_even_parity ^ parity_fault_injection;
+// assign data_out = {^data_in[DATA_IN_WIDTH-1:0] ~^ is_even_parity ^ parity_fault_injection, data_in};
 
-// assign parity_bit = 
-//     is_even_parity 
-//     ?
-//     ^data_in[DATA_IN_WIDTH-1:0]
-//     :
-//     ~(^data_in[DATA_IN_WIDTH-1:0]);
+assign parity_bit = 
+    is_even_parity 
+    ?
+    ^data_in[DATA_IN_WIDTH-1:0]
+    :
+    ~(^data_in[DATA_IN_WIDTH-1:0]);
 
-// assign data_out = { 
-//     parity_fault_injection ? ~parity_bit : parity_bit
-//     ,
-//     data_in[DATA_IN_WIDTH-1:0]
-//     };
+assign data_out = { 
+    parity_fault_injection ? ~parity_bit : parity_bit
+    ,
+    data_in[DATA_IN_WIDTH-1:0]
+    };
 
 endmodule
 

@@ -17,7 +17,6 @@ class uart_tx_driver;
             @(posedge vif.clk);
             while(!vif.tx_done) @(posedge vif.clk); //wait for transmitter to complete
             ->drv_done; //now we know the transmitter is done, we can raise the drv_done event to signal for a new transaction to send over
-            $display ("T=%0t [Driver] Driver done processing item.", $time);
             vif.tx_start <= 0;
         end
     endtask

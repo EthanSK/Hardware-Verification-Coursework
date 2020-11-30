@@ -66,7 +66,7 @@ module UART_TX(
   
 //State Machine  
   always @(posedge clk, negedge resetn)
-  begin
+  beging
     if(!resetn)
       begin
         current_state <= idle_st;
@@ -82,7 +82,7 @@ module UART_TX(
         count_reg <= count_next;
         data_reg <= data_next;
         tx_reg <= tx_next;
-      end
+       end
   end
 
 
@@ -158,3 +158,45 @@ module UART_TX(
   assign tx = tx_reg;
   
 endmodule
+
+
+
+////this is just to confirm that tx works for sanity
+
+// module uart_tx_mini_test();
+
+// reg clk = 0;
+// reg b_tick = 0;
+// reg tx_start;
+// reg resetn;
+
+// wire tx_done;
+// wire tx;
+
+    
+//     always #10 clk = ~clk; 
+//     always #20 b_tick = ~b_tick;
+
+
+// UART_TX uUART_TX(
+// .clk(clk),
+// .b_tick(b_tick),
+// .tx_start(tx_start),
+// .resetn(resetn),
+// .d_in(9'b011111111),
+// .tx_done(tx_done),
+// .tx(tx)
+// );
+
+//   initial begin
+
+//         clk <= 0;
+//         resetn <= 0;
+//         tx_start <= 0;
+//         #40 resetn <= 1;
+//         #20 tx_start <= 1;
+//         #10000;
+//          $stop;
+//   end
+
+// endmodule

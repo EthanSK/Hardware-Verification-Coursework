@@ -13,7 +13,7 @@ module uart_tx_testbench;
     uBAUDGEN(
         .clk(clk),
         .resetn(_if.resetn),
-        .baud_rate(17'd19200),
+        .baud_rate(18'd19200),
         .baudtick(baud_tick)
     );
 
@@ -36,7 +36,6 @@ module uart_tx_testbench;
         _if.resetn <= 0;
         _if.tx_start <= 0;
         #40 _if.resetn <= 1;
-        #40 _if.resetn <= 0;
 
 
         t.env.vif = _if;
@@ -44,6 +43,7 @@ module uart_tx_testbench;
 
         #1000ns;
         $display ("T=%0t [Testbench] Testbench finishing...", $time);
-        $finish;
+        // $finish; //this quits questasim...
+        $stop;
     end
 endmodule

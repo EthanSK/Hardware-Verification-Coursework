@@ -8,7 +8,7 @@ module PARITY_CHECK
     output wire PARITYERR
 );
 
- assign PARITYERR = fault_inject ^ ((^data_in_parity[DATA_WIDTH:0]) ^ is_even_parity);
+ assign PARITYERR = parity_fault_injection ^ ((^data_in_parity[ORIG_DATA_IN_WIDTH:0]) ^ is_even_parity);
 
 endmodule
 

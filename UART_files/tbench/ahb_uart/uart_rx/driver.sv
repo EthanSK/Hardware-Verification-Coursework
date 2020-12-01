@@ -17,7 +17,7 @@ class uart_rx_driver
             vif.rx <= 0; //start bit
             @(posedge vif.clk);
 
-            for(int i = 0; i < 8; i++) @(posedge vif.b_tick); //might not need this
+            for(int i = 0; i < 8; i++) @(posedge vif.baud_tick); //might not need this
 
             for (int i = 0; i < DATA_SIZE; i++ ) begin
                 vif.rx <= t.d_in[i];                
@@ -26,8 +26,8 @@ class uart_rx_driver
             end
 
             vif.rx <= 1; //stop bit
-            while(!vif.tx_done) @(posedge vif.clk);
-
+            while(!vif.rx_done) @(posedge vif.clk);
+            vif.d_in = t.d_in;
             ->drv_done; //now we know the transmitter is done, we can raise the drv_done event to signal for a new transaction to send over
             
         end

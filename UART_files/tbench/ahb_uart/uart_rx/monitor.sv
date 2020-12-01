@@ -17,7 +17,7 @@ class uart_rx_monitor
                 @ (posedge vif.clk);
 
                 t.d_in = vif.d_in;
-                t.d_out = vif.d_out;
+                t.d_out = vif.dout;
                 scb_mbx.put(t);
             end
         end

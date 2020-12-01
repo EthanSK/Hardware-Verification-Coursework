@@ -41,6 +41,7 @@ class uart_tx_environment;
             gen.run();
         join_any
         
+        #200ns;
         $display ("T=%0t Num tests passed: %0d | Num tests failed: %0d", $time, scb.num_passed, scb.num_failed);
 
     endtask

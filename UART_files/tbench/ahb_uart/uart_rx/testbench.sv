@@ -17,7 +17,7 @@ module uart_rx_testbench;
         .baudtick(baud_tick)
     );
 
-    UART_rx DUT (
+    UART_RX DUT (
         .clk(clk),
         .resetn(_if.resetn),
         .rx(_if.rx),

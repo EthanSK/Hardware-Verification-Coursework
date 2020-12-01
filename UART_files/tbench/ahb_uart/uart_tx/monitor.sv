@@ -25,7 +25,6 @@ class uart_tx_monitor
                 d_out = tx_out[TX_OUT_SIZE-2:1]; //remove the start and stop bits
                 t.d_in = vif.d_in;
                 t.d_out = d_out;
-                $display ("T=%0t [Monitor] Monitor processed item...", $time);
                 scb_mbx.put(t);
             end
         end

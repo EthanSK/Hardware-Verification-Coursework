@@ -42,7 +42,7 @@ module uart_tx_testbench;
         t.run();
 
         #1000ns;
-        $display ("T=%0t [Testbench] Testbench finishing...", $time);
+        // $display ("T=%0t [Testbench] Testbench finishing...", $time);
         // $finish; //this quits questasim...
         $stop;
     end

@@ -66,7 +66,7 @@ module UART_TX(
   
 //State Machine  
   always @(posedge clk, negedge resetn)
-  beging
+  begin
     if(!resetn)
       begin
         current_state <= idle_st;

@@ -57,7 +57,7 @@ module AHBUART(
   
   output wire uart_irq,  //Interrupt
 
-  input wire is_even_parity, //1 for even parity 0 for odd
+  input wire PARITYSEL, //1 for odd parity 0 for even
   input wire parity_fault_injection, //0 for no fault, 1 for fault
   output wire PARITYERR
 );
@@ -149,7 +149,7 @@ module AHBUART(
     #(.DATA_IN_WIDTH(8))
   uPARITY_GEN
   (
-      .is_even_parity(is_even_parity),
+      .is_even_parity(~PARITYSEL),
       .data_in(uart_wdata[7:0]),
       .parity_fault_injection(parity_fault_injection),
       .data_out(uart_wdata_parity[8:0])
@@ -160,7 +160,7 @@ module AHBUART(
     #(.ORIG_DATA_IN_WIDTH(8))
   uPARITY_CHECK
   (
-      .is_even_parity(is_even_parity),
+      .is_even_parity(~PARITYSEL),
       .data_in_parity(uart_rdata_parity[8:0]),
       .parity_fault_injection(parity_fault_injection),
       .PARITYERR(PARITYERR)

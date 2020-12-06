@@ -18,7 +18,7 @@ class ahb_uart_tx_driver;
             vif.HADDR <= t.HADDR;
             vif.HWDATA <= t.HWDATA;
 
-            vif.HTRANS <= 2'b10
+            vif.HTRANS <= 2'b10;
             vif.HWRITE <= 1'b1;
             vif.HREADY <= 1'b1;
             vif.HSEL <= 1'b1;

@@ -3,7 +3,7 @@ class ahb_uart_transaction;
     rand bit [31:0] HWDATA;
     
     rand bit [31:0] HADDR;
-    constraint HADDR_bottom_byte {addr[7:0] == 8'd0;}
+    constraint HADDR_bottom_byte {HADDR[7:0] == 8'h00;}
 
     bit [17:0] baud_rate;
     bit [31:0] HRDATA;

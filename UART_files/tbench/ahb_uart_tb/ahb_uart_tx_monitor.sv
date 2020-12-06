@@ -15,9 +15,8 @@ class ahb_uart_tx_monitor
         forever begin
             @ (posedge vif.clk);
             if (~vif.RsTx) begin //start bit is 0, stop bit is 1. when the tx start bit is 0 we know it has started transmitting,
-                uart_tx_transaction t = new; 
+                ahb_uart_transaction t = new; 
                 logic [31:0] d_in = vif.HWDATA; // get the corresponding input now so we can pair it in the newly created transaction
-                t.HWDATA = d_in;  
                 logic [TX_OUT_SIZE-3:0] d_out; //tx output with parity minus start and stop bits
                 logic [TX_OUT_SIZE-1:0] tx_out; //includes the start and stop bits - so 11 bits
                 $display ("T=%0t [Monitor] Monitor processing item...", $time);
@@ -28,6 +27,7 @@ class ahb_uart_tx_monitor
                 end //sample the output bits
                 while (!vif.tx_done) @ (posedge vif.clk); //wait until done signal
                 d_out = tx_out[TX_OUT_SIZE-2:1]; //remove the start and stop bits
+                t.HWDATA = d_in;  
                 t.RsTx_data = d_out;
                 scb_mbx.put(t);
             end

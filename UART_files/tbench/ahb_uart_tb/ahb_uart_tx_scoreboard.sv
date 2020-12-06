@@ -11,8 +11,8 @@ class ahb_uart_tx_scoreboard;
             ahb_uart_transaction t;
             scb_mbx.get(t);
             t.print("Tx Scoreboard");
-            check_data(t);
-            check_parity(t);
+            void'(check_data(t));
+            void'(check_parity(t));
             
         end
     endtask

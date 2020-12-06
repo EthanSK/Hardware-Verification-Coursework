@@ -1,11 +1,23 @@
 import ahb_uart_pkg::ahb_uart_test;
 
-module ahb_uart_testbench;
+module ahb_uart_testbench
+#(parameter BAUD_RATE=18'd19200)
+;
     reg clk;
- 
+    reg baud_tick;
+
     ahb_uart_if _if(clk, baud_tick);
 
     always #10ns clk = ~clk; //50 mhz clock
+
+    BAUDGEN 
+    #(.CLOCK_HZ(50_000_000))
+    uBAUDGEN(
+        .clk(clk),
+        .resetn(_if.HRESETn),
+        .baud_rate(BAUD_RATE),
+        .baudtick(baud_tick)
+    ); //used just so we can read the data at the correct rate in the tx monitor for eg
 
     AHBUART DUT(
         .HCLK(clk),
@@ -23,9 +35,9 @@ module ahb_uart_testbench;
         .uart_irq(_if.uart_irq),
 
         .PARITYSEL(_if.PARITYSEL),
-        .parity_fault_injection(0),
+        .parity_fault_injection(1'b1),
         .PARITYERR(_if.PARITYERR),
-        .baud_rate(19200)
+        .baud_rate(BAUD_RATE)
         );
 
     initial begin
@@ -35,15 +47,17 @@ module ahb_uart_testbench;
 
         clk <= 0;
         _if.HRESETn <= 0;
-        _if.PARITYSEL <= 0; //even parity
-         #40 _if.HRESETn <= 1;
+        _if.PARITYSEL <= 0; //even parity        
+        _if.RsRx <= 1'b1; //put on stop bit
+         #20 _if.HRESETn <= 1;
+        
 
 
         t.env.vif = _if;
         t.run();
 
-        #10000ns;
-        // $display ("T=%0t [Testbench] Testbench finishing...", $time);
+        #0.01s;
+        $display ("T=%0t [Testbench] Testbench finishing...", $time);
         $stop;
     end
 endmodule

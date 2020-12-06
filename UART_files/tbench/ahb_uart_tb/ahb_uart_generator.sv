@@ -1,7 +1,7 @@
 import ahb_uart_pkg::ahb_uart_transaction;
 
 class ahb_uart_generator
-#(parameter NUM_TESTS=20) 
+#(parameter NUM_TESTS=3) 
 ;
     mailbox drv_mbx;
     event drv_done;

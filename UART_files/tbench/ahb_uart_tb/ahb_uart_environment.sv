@@ -37,15 +37,15 @@ class ahb_uart_environment;
         tx_mon.vif = vif;
 
         fork
+            gen.run(); 
             tx_drv.run();
             tx_mon.run();
             tx_scb.run();
-            gen.run();
         join_any
         
         //TODO: - fork join any for rx AFTER the tx is done. theerofre we can reuse the vif and the gen
 
-        #200ns;
+        #0.01s; //so it shows after all the tests are actually finished
         $display ("T=%0t Tx Num tests passed: %0d | Num tests failed: %0d", $time, tx_scb.num_passed, tx_scb.num_failed);
 
     endtask

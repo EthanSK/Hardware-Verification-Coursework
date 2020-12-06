@@ -24,8 +24,14 @@ class ahb_uart_tx_driver;
             vif.HSEL <= 1'b1;
  
             @(posedge vif.clk);
+            vif.HSEL <= 1'b0;
+            vif.HTRANS <= 2'd0;
             while(!vif.HREADYOUT) @(posedge vif.clk); //wait for fifo to have space so we can start sending more
             ->drv_done; //now we know the ahb transmission is done, we can raise the drv_done event to signal for a new transaction to send over
-         end
+            vif.HADDR <= 32'd0;
+            vif.HWRITE <= 1'b0;
+            vif.HSEL <= 1'b0;
+            vif.HTRANS <= 2'd0;
+          end
     endtask
 endclass

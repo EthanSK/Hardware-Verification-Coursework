@@ -6,6 +6,7 @@ class uart_rx_driver
     mailbox drv_mbx;
     event drv_done;
     virtual uart_rx_if vif;
+    mailbox tr_mbx;
 
     task run();
         $display ("T=%0t [Driver] Driver is starting...", $time);        
@@ -27,7 +28,7 @@ class uart_rx_driver
 
             vif.rx <= 1; //stop bit
             while(!vif.rx_done) @(posedge vif.clk);
-            vif.d_in = t.d_in;
+            tr_mbx.put(t);
             ->drv_done; //now we know the transmitter is done, we can raise the drv_done event to signal for a new transaction to send over
             
         end

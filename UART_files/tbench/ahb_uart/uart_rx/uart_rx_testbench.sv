@@ -37,9 +37,10 @@ module uart_rx_testbench;
 
 
         t.env.vif = _if;
-        t.run();
-
-        #1000ns;
+        fork
+            t.run();    
+        join
+        
         // $display ("T=%0t [Testbench] Testbench finishing...", $time);
         // $finish; //this quits questasim...
         $stop;

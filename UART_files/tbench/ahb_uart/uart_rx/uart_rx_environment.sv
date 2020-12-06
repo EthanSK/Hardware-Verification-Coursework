@@ -8,6 +8,7 @@ class uart_rx_environment;
 
     mailbox scb_mbx;
     mailbox drv_mbx;
+    mailbox tr_mbx;
 
     virtual uart_rx_if vif;
     event drv_done;
@@ -19,12 +20,16 @@ class uart_rx_environment;
         gen = new;
         scb_mbx = new();
         drv_mbx = new();
+        tr_mbx = new();
 
         mon.scb_mbx = scb_mbx;
         scb.scb_mbx = scb_mbx;
 
         drv.drv_mbx = drv_mbx;
         gen.drv_mbx = drv_mbx;
+
+        drv.tr_mbx = tr_mbx;
+        mon.tr_mbx = tr_mbx;
 
         drv.drv_done = drv_done;
         gen.drv_done = drv_done;

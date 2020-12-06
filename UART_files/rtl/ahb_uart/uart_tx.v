@@ -163,40 +163,41 @@ endmodule
 
 ////this is just to confirm that tx works for sanity
 
-// module uart_tx_mini_test();
+module uart_tx_mini_test();
 
-// reg clk = 0;
-// reg b_tick = 0;
-// reg tx_start;
-// reg resetn;
+reg clk = 0;
+reg b_tick = 0;
+reg tx_start;
+reg resetn;
+reg poo = 0;
 
-// wire tx_done;
-// wire tx;
+wire tx_done;
+wire tx;
 
     
-//     always #10 clk = ~clk; 
-//     always #20 b_tick = ~b_tick;
+    always #10 clk = ~clk; 
+    always #20 b_tick = ~b_tick;
+    always #320 poo = ~poo;
 
+UART_TX uUART_TX(
+.clk(clk),
+.b_tick(b_tick),
+.tx_start(tx_start),
+.resetn(resetn),
+.d_in(9'b011101111),
+.tx_done(tx_done),
+.tx(tx)
+);
 
-// UART_TX uUART_TX(
-// .clk(clk),
-// .b_tick(b_tick),
-// .tx_start(tx_start),
-// .resetn(resetn),
-// .d_in(9'b011111111),
-// .tx_done(tx_done),
-// .tx(tx)
-// );
+  initial begin
 
-//   initial begin
+        clk <= 0;
+        resetn <= 0;
+        tx_start <= 0;
+        #40 resetn <= 1;
+        @(posedge clk) tx_start <= 1;
+        #10000;
+         $stop;
+  end
 
-//         clk <= 0;
-//         resetn <= 0;
-//         tx_start <= 0;
-//         #40 resetn <= 1;
-//         #20 tx_start <= 1;
-//         #10000;
-//          $stop;
-//   end
-
-// endmodule
+endmodule

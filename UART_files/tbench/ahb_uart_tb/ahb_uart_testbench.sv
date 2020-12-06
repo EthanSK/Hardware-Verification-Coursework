@@ -49,7 +49,7 @@ module ahb_uart_testbench
         _if.HRESETn <= 0;
         _if.PARITYSEL <= 0; //even parity        
         _if.RsRx <= 1'b1; //put on stop bit
-         #20 _if.HRESETn <= 1;
+         #40 _if.HRESETn <= 1;
         
 
 

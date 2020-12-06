@@ -8,6 +8,7 @@ class uart_tx_environment;
 
     mailbox scb_mbx;
     mailbox drv_mbx;
+    mailbox tr_mbx;
 
     virtual uart_tx_if vif;
     event drv_done;
@@ -19,12 +20,16 @@ class uart_tx_environment;
         gen = new;
         scb_mbx = new();
         drv_mbx = new();
+        tr_mbx = new();
 
         mon.scb_mbx = scb_mbx;
         scb.scb_mbx = scb_mbx;
 
         drv.drv_mbx = drv_mbx;
         gen.drv_mbx = drv_mbx;
+
+        drv.tr_mbx = tr_mbx;
+        mon.tr_mbx = tr_mbx;
 
         drv.drv_done = drv_done;
         gen.drv_done = drv_done;
@@ -33,13 +38,14 @@ class uart_tx_environment;
     virtual task run();
         drv.vif = vif;
         mon.vif = vif;
-
+        
         fork
             drv.run();
             mon.run();
             scb.run();
-            gen.run();
+            gen.run(); 
         join_any
+        
         
         #200ns;
         $display ("T=%0t Num tests passed: %0d | Num tests failed: %0d", $time, scb.num_passed, scb.num_failed);

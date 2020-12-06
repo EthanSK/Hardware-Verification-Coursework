@@ -1,20 +1,20 @@
-import uart_tx_pkg::*; //have to import * - importing each one manually gives errors about not being able to find it
+import ahb_uart_pkg::*; //have to import * - importing each one manually gives errors about not being able to find it
 
-class uart_tx_environment;
-    uart_tx_scoreboard scb;
-    uart_tx_monitor mon;
-    uart_tx_driver drv;
-    uart_tx_generator gen;
+class ahb_uart_environment;
+    ahb_uart_scoreboard scb;
+    ahb_uart_tx_monitor tx_mon;
+    ahb_uart_tx_driver tx_drv;
+    ahb_uart_generator gen;
 
     mailbox scb_mbx;
     mailbox drv_mbx;
 
-    virtual uart_tx_if vif;
+    virtual ahb_uart_if vif;
     event drv_done;
 
     function new();
-        mon = new;
-        drv = new;
+        tx_mon = new;
+        tx_drv = new;
         scb = new;
         gen = new;
         scb_mbx = new();

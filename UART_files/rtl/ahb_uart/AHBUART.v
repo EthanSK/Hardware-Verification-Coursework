@@ -57,9 +57,10 @@ module AHBUART(
   
   output wire uart_irq,  //Interrupt
 
-  input wire PARITYSEL, //1 for odd parity 0 for even
+  input wire PARITYSEL, //1 for odd parity 0 for even (implemented like this because I saw it in the spec too late)
   input wire parity_fault_injection, //0 for no fault, 1 for fault
-  output wire PARITYERR
+  output wire PARITYERR,
+  input wire [17:0] baud_rate
 );
 
 //Internal Signals
@@ -137,11 +138,10 @@ module AHBUART(
   
   assign uart_irq = ~rx_empty; 
   
-  //generate a fixed baud rate 19200bps
-  BAUDGEN uBAUDGEN(
+   BAUDGEN uBAUDGEN(
     .clk(HCLK),
     .resetn(HRESETn),
-    .baud_rate(17'd19200),
+    .baud_rate(baud_rate),
     .baudtick(b_tick)
   );
   

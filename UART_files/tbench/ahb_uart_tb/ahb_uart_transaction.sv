@@ -1,15 +1,20 @@
-class uart_tx_transaction;
+class ahb_uart_transaction;
 
-    rand bit [8:0] d_in; //this represents the input vector
-    bit [8:0] d_out; //this represents each serial bit of the output. each element is the subsequent bit output by the tx.
+    rand bit [31:0] HWDATA;
+    
+    rand bit [31:0] HADDR;
+    constraint HADDR_bottom_byte {addr[7:0] == 8'd0;}
 
-    //not using because d_in is set by calling randomize() on instance of obj
-    // function new(bit [8:0] d_in, d_out); 
-    //     d_in=d_in;
-    //     d_out=d_out;
-    // endfunction
- 
+    bit [17:0] baud_rate;
+    bit [31:0] HRDATA;
+    bit  [1:0]  HTRANS;
+    bit PARITYSEL;
+    bit PARITYERR;
+
+    bit [8:0] RsTx_data; //output data from tx wire after data has all gone through. includes parity
+
+
     function void print(string tag="");
-        $display ("T=%0t [Transaction] (Tag: %s) d_in=0x%0h d_out=0x%0h", $time, tag, d_in, d_out);
+        $display ("T=%0t [Transaction] (Tag: %s) baud_rate=0x%0h HWDATA=0x%0h HADDR=0x%0h HRDATA=0x%0h", $time, tag, baud_rate, HWDATA, HADDR, HRDATA);
     endfunction
 endclass

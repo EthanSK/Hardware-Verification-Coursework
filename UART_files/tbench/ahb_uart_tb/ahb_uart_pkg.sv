@@ -1,13 +1,13 @@
-package uart_tx_pkg;
-    `include "uart_tx_transaction.sv"
-    `include "uart_tx_generator.sv"
-    `include "uart_tx_driver.sv"
-    `include "uart_tx_monitor.sv"
-    `include "uart_tx_scoreboard.sv"
-    `include "uart_tx_environment.sv"
-    `include "uart_tx_test.sv" 
+package ahb_uart_pkg;
+    `include "ahb_uart_transaction.sv"
+    `include "ahb_uart_generator.sv"
+    `include "ahb_uart_tx_driver.sv"
+    `include "ahb_uart_tx_monitor.sv"
+    `include "ahb_uart_scoreboard.sv"
+    `include "ahb_uart_environment.sv"
+    `include "ahb_uart_test.sv" 
  
-endpackage : uart_tx_pkg
+endpackage : ahb_uart_pkg
 
 // `include "interface.sv"
 

@@ -1,7 +1,7 @@
-import uart_tx_pkg::uart_tx_environment;
+import ahb_uart_pkg::ahb_uart_environment;
 
-class uart_tx_test;
-    uart_tx_environment env;
+class ahb_uart_test;
+    ahb_uart_environment env;
 
     function new();
         env = new;

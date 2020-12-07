@@ -26,24 +26,27 @@ assign data_out = {
     data_in[DATA_IN_WIDTH-1:0]
     };
 
+ 
+
 endmodule
 
-// module paritygentest();
+module paritygentest();
 
-// wire [8:0] data_out;
+wire [8:0] data_out;
 
-// PARITY_GEN
-//     #(.DATA_IN_WIDTH(8))
-// uPARITY_GEN
-// (
-//     .is_even_parity(1'b0),
-//     .data_in(8'b10101010),
-//     .data_out(data_out[8:0])
-// );    
+PARITY_GEN
+    #(.DATA_IN_WIDTH(8))
+uPARITY_GEN
+(
+    .is_even_parity(1'b1),
+    .data_in(8'b01000001),
+    .data_out(data_out[8:0]),
+    .parity_fault_injection(1'b0)
+);    
 
-// initial begin
-//     #100
-//     $display("%b", data_out[8]);
-// end
+initial begin
+    #100
+    $display("Parity bit: %b", data_out[8]);
+end
 
-// endmodule
+endmodule

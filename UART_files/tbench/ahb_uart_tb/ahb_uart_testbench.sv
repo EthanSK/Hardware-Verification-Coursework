@@ -35,7 +35,7 @@ module ahb_uart_testbench
         .uart_irq(_if.uart_irq),
 
         .PARITYSEL(_if.PARITYSEL),
-        .parity_fault_injection(1'b1),
+        .parity_fault_injection(1'b0),
         .PARITYERR(_if.PARITYERR),
         .baud_rate(BAUD_RATE)
         );
@@ -47,16 +47,16 @@ module ahb_uart_testbench
 
         clk <= 0;
         _if.HRESETn <= 0;
-        _if.PARITYSEL <= 0; //even parity        
+        _if.PARITYSEL <= 1'b0; //even parity        
         _if.RsRx <= 1'b1; //put on stop bit
          #40 _if.HRESETn <= 1;
         
-
-
         t.env.vif = _if;
-        t.run();
+        fork
+            t.run();            
+        join
 
-        #0.01s;
+
         $display ("T=%0t [Testbench] Testbench finishing...", $time);
         $stop;
     end

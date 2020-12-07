@@ -13,6 +13,8 @@ class ahb_uart_environment;
 
     mailbox tr_mbx; //outstanding transactions tht we can pull data from
 
+    mailbox num_outstanding_tests; //so we can finish after all tests have completed
+
     virtual ahb_uart_if vif;
     event tx_drv_done;
 
@@ -24,6 +26,7 @@ class ahb_uart_environment;
         scb_mbx = new();
         drv_mbx = new();
         tr_mbx = new();
+        num_outstanding_tests = new();
 
         gen.drv_mbx = drv_mbx;
         gen.drv_done = tx_drv_done;
@@ -35,11 +38,15 @@ class ahb_uart_environment;
         tx_drv.tr_mbx = tr_mbx;
         tx_mon.tr_mbx = tr_mbx;
 
+        tx_scb.num_outstanding_tests = num_outstanding_tests;
+        gen.num_outstanding_tests = num_outstanding_tests;
+
     endfunction
 
     virtual task run();
         tx_drv.vif = vif;
         tx_mon.vif = vif;
+        tx_scb.vif = vif;
 
         fork
             gen.run(); 
@@ -48,8 +55,18 @@ class ahb_uart_environment;
             tx_scb.run();
         join_any
         
+        #40;
 
-        #0.01s; //so it shows after all the tests are actually finished
+        //wait until all tests have complete
+        while (num_outstanding_tests.num() !=0 ) 
+            begin
+                @ (posedge vif.clk); 
+                #100;
+                // $display ("num_outstanding_tests.num() %0d", num_outstanding_tests.num());
+            end
+        
+
+        // #0.05s; //so it shows after all the tests are actually finished
 
         //TODO: - fork join any for rx AFTER the tx is done. theerofre we can reuse the vif and the gen...do it here as well after the artificial delay so we can guarantee it runs only after
 

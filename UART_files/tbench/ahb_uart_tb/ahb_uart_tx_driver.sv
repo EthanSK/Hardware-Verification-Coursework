@@ -12,11 +12,12 @@ class ahb_uart_tx_driver;
         $display ("T=%0t [Driver] Driver is starting...", $time);        
         forever begin
             ahb_uart_transaction t;
+            @(posedge vif.clk);
             $display ("T=%0t [Driver] Driver waiting for item...", $time);
             drv_mbx.get(t); //blocks until next item is present
             tr_mbx.put(t);
             t.print("Driver");
-            
+            $display ("Expected: %d", t.HWDATA[7:0]); //TODO: - remove
             vif.HADDR <= t.HADDR;
             vif.HTRANS <= 2'b1x;
             vif.HWRITE <= 1'b1;
@@ -27,10 +28,10 @@ class ahb_uart_tx_driver;
             vif.HWRITE <= 1'b0;
             vif.HSEL <= 1'b0;
             vif.HTRANS <= 2'b00;            
-            $display ("Expected: %d", t.HWDATA[7:0]); //TODO: - remove
- 
+  
             @(posedge vif.clk);
-            while(!vif.HREADYOUT) @(posedge vif.clk); //wait for fifo to have space so we can start sending more
+            @(posedge vif.clk);
+            while(~vif.HREADYOUT) @(posedge vif.clk); //wait for fifo to have space so we can start sending more
             ->drv_done; //now we know the ahb transmission is done, we can raise the drv_done event to signal for a new transaction to send over
 
           end

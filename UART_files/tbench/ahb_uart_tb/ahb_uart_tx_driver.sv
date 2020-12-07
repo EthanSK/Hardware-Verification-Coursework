@@ -30,7 +30,7 @@ class ahb_uart_tx_driver;
             vif.HTRANS <= 2'b00;            
   
             @(posedge vif.clk);
-            @(posedge vif.clk);
+            @(posedge vif.clk); //this posedge clock saved my life. without it everything breaks.
             while(~vif.HREADYOUT) @(posedge vif.clk); //wait for fifo to have space so we can start sending more
             ->drv_done; //now we know the ahb transmission is done, we can raise the drv_done event to signal for a new transaction to send over
 

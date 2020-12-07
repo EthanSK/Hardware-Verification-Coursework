@@ -11,7 +11,7 @@ class ahb_uart_environment;
     mailbox scb_mbx;
     mailbox drv_mbx;
 
-    mailbox cur_transactions; //outstanding transactions tht we can pull data from
+    mailbox tr_mbx; //outstanding transactions tht we can pull data from
 
     virtual ahb_uart_if vif;
     event tx_drv_done;
@@ -23,7 +23,7 @@ class ahb_uart_environment;
         gen = new;
         scb_mbx = new();
         drv_mbx = new();
-        cur_transactions = new();
+        tr_mbx = new();
 
         gen.drv_mbx = drv_mbx;
         gen.drv_done = tx_drv_done;
@@ -32,8 +32,8 @@ class ahb_uart_environment;
         tx_scb.scb_mbx = scb_mbx;
         tx_drv.drv_mbx = drv_mbx;
         tx_drv.drv_done = tx_drv_done;
-        tx_drv.cur_transactions = cur_transactions;
-        tx_mon.cur_transactions = cur_transactions;
+        tx_drv.tr_mbx = tr_mbx;
+        tx_mon.tr_mbx = tr_mbx;
 
     endfunction
 

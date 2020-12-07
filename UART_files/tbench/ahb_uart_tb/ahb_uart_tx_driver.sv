@@ -4,7 +4,7 @@ import ahb_uart_pkg::ahb_uart_transaction;
 //this drives input to the ahb from the cpu so that it gets transmitted
 class ahb_uart_tx_driver;
     mailbox drv_mbx;
-    mailbox cur_transactions;
+    mailbox tr_mbx;
     event drv_done;
     virtual ahb_uart_if vif;
 
@@ -14,28 +14,25 @@ class ahb_uart_tx_driver;
             ahb_uart_transaction t;
             $display ("T=%0t [Driver] Driver waiting for item...", $time);
             drv_mbx.get(t); //blocks until next item is present
-            cur_transactions.put(t);
+            tr_mbx.put(t);
             t.print("Driver");
             
             vif.HADDR <= t.HADDR;
-            vif.HWDATA <= t.HWDATA;
-            $display ("Expected: %d", t.HWDATA[7:0]); //TODO: - remove
-
-
-            vif.HTRANS <= 2'b10;
+            vif.HTRANS <= 2'b1x;
             vif.HWRITE <= 1'b1;
             vif.HREADY <= 1'b1;
             vif.HSEL <= 1'b1;
- 
             @(posedge vif.clk);
-            vif.HSEL <= 1'b0;
-            vif.HTRANS <= 2'd0;
-            while(!vif.HREADYOUT) @(posedge vif.clk); //wait for fifo to have space so we can start sending more
-            ->drv_done; //now we know the ahb transmission is done, we can raise the drv_done event to signal for a new transaction to send over
-            vif.HADDR <= 32'd0;
+            vif.HWDATA <= t.HWDATA;
             vif.HWRITE <= 1'b0;
             vif.HSEL <= 1'b0;
-            vif.HTRANS <= 2'd0;
+            vif.HTRANS <= 2'b00;            
+            $display ("Expected: %d", t.HWDATA[7:0]); //TODO: - remove
+ 
+            @(posedge vif.clk);
+            while(!vif.HREADYOUT) @(posedge vif.clk); //wait for fifo to have space so we can start sending more
+            ->drv_done; //now we know the ahb transmission is done, we can raise the drv_done event to signal for a new transaction to send over
+
           end
     endtask
 endclass

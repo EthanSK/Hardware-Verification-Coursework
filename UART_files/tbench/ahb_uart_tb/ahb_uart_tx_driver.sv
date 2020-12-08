@@ -17,17 +17,19 @@ class ahb_uart_tx_driver;
             drv_mbx.get(t); //blocks until next item is present
             tr_mbx.put(t);
             t.print("Driver");
-            $display ("Expected: %d", t.HWDATA[7:0]); //TODO: - remove
+            $display ("Expected: %d (%b)", t.HWDATA[7:0], t.HWDATA[7:0]); //TODO: - remove
             vif.HADDR <= t.HADDR;
-            vif.HTRANS <= 2'b1x;
+            vif.HTRANS <= 2'b10;
             vif.HWRITE <= 1'b1;
             vif.HREADY <= 1'b1;
             vif.HSEL <= 1'b1;
+            vif.PARITYSEL <= t.PARITYSEL;
+            vif.parity_fault_injection <= t.parity_fault_injection;
             @(posedge vif.clk);
             vif.HWDATA <= t.HWDATA;
-            vif.HWRITE <= 1'b0;
+            // vif.HWRITE <= 1'b0;
             vif.HSEL <= 1'b0;
-            vif.HTRANS <= 2'b00;            
+            // vif.HTRANS <= 2'b00;            
   
             @(posedge vif.clk);
             @(posedge vif.clk); //this posedge clock saved my life. without it everything breaks.

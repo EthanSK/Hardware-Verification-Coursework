@@ -4,7 +4,7 @@ import ahb_uart_pkg::ahb_uart_transaction;
 //this drives input to the ahb from the cpu so that it gets transmitted
 class ahb_uart_tx_driver;
     mailbox drv_mbx;
-    mailbox tr_mbx;
+    mailbox tx_tr_mbx;
     event drv_done;
     virtual ahb_uart_if vif;
 
@@ -15,7 +15,7 @@ class ahb_uart_tx_driver;
             @(posedge vif.clk);
             $display ("T=%0t [Driver] Driver waiting for item...", $time);
             drv_mbx.get(t); //blocks until next item is present
-            tr_mbx.put(t);
+            tx_tr_mbx.put(t);
             t.print("Driver");
             $display ("Expected: %d (%b)", t.HWDATA[7:0], t.HWDATA[7:0]); //TODO: - remove
             vif.HADDR <= t.HADDR;

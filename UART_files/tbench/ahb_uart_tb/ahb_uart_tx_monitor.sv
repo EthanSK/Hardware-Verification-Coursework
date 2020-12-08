@@ -8,7 +8,8 @@ class ahb_uart_tx_monitor
 ;
     virtual ahb_uart_if vif;
     mailbox scb_mbx;
-    mailbox tr_mbx;
+    mailbox tx_tr_mbx;
+    mailbox rx_tr_mbx;
  
  
     task run();
@@ -20,7 +21,7 @@ class ahb_uart_tx_monitor
                  
                 logic [TX_OUT_SIZE-3:0] d_out; //tx output with parity minus start and stop bits
                 logic [TX_OUT_SIZE-1:0] tx_out; //includes the start and stop bits - so 11 bits
-                tr_mbx.get(t);
+                tx_tr_mbx.get(t);
                 $display ("T=%0t [Monitor] Monitor processing item...", $time);
                 // @ (posedge vif.clk);
                 for (int i = 0; i < TX_OUT_SIZE; i++) begin //includes start and stop state
@@ -30,6 +31,7 @@ class ahb_uart_tx_monitor
                     for (int j = 0; j < 8; j++) @ (posedge vif.baud_tick); //wait for 16 baud ticks because it's oversampled
                     vif.RsRx = vif.RsTx; //send the tx output directly back into the rx input
                     
+                    
                 end //sample the output bits
 
                 d_out = tx_out[TX_OUT_SIZE-2:1]; //remove the start and stop bits
@@ -37,6 +39,8 @@ class ahb_uart_tx_monitor
                 // $display ("id: %d Actual: %d RealExpected: %d", t.test_id, d_out[7:0], t.HWDATA[7:0]); 
                 t.RsTx_data = d_out;
                 scb_mbx.put(t);
+
+                rx_tr_mbx.put(t); // put the transaction data in the rx mailbox so we can check against the inputs later
 
                end
         end

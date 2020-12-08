@@ -4,14 +4,18 @@ class ahb_uart_environment;
     ahb_uart_generator gen;
 
     ahb_uart_tx_scoreboard tx_scb;
+    ahb_uart_rx_scoreboard rx_scb;
     ahb_uart_tx_monitor tx_mon;
+    ahb_uart_rx_monitor rx_mon;
     ahb_uart_tx_driver tx_drv;
     
 
-    mailbox scb_mbx;
+    mailbox tx_scb_mbx;
+    mailbox rx_scb_mbx;
     mailbox drv_mbx;
 
-    mailbox tr_mbx; //outstanding transactions tht we can pull data from
+    mailbox tx_tr_mbx; // tx transactions tht we can get corresponding input data from
+    mailbox rx_tr_mbx; // rx transactions ""
 
     mailbox num_outstanding_tests; //so we can finish after all tests have completed
 
@@ -22,21 +26,30 @@ class ahb_uart_environment;
         tx_mon = new;
         tx_drv = new;
         tx_scb = new;
+        rx_scb = new;
+        rx_mon = new;
         gen = new;
-        scb_mbx = new();
+        tx_scb_mbx = new();
         drv_mbx = new();
-        tr_mbx = new();
+        tx_tr_mbx = new();
+        rx_tr_mbx = new();
         num_outstanding_tests = new();
 
         gen.drv_mbx = drv_mbx;
         gen.drv_done = tx_drv_done;
 
-        tx_mon.scb_mbx = scb_mbx;
-        tx_scb.scb_mbx = scb_mbx;
+        tx_mon.scb_mbx = tx_scb_mbx;
+        tx_scb.scb_mbx = tx_scb_mbx;
         tx_drv.drv_mbx = drv_mbx;
         tx_drv.drv_done = tx_drv_done;
-        tx_drv.tr_mbx = tr_mbx;
-        tx_mon.tr_mbx = tr_mbx;
+        tx_drv.tx_tr_mbx = tx_tr_mbx;
+        tx_mon.tx_tr_mbx = tx_tr_mbx;
+        
+        tx_mon.rx_tr_mbx = rx_tr_mbx;
+        rx_mon.rx_tr_mbx = rx_tr_mbx;
+
+        rx_scb.scb_mbx = rx_scb_mbx;
+        rx_mon.scb_mbx = rx_scb_mbx;
 
         tx_scb.num_outstanding_tests = num_outstanding_tests;
         gen.num_outstanding_tests = num_outstanding_tests;

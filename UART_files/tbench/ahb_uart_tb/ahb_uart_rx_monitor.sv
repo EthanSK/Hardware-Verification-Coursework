@@ -17,7 +17,7 @@ class ahb_uart_rx_monitor
             @ (posedge vif.clk);
             
             //only try and read if we are not currently writing
-            if (~vif.HWRITE && vif.HRDATA) begin                
+            if (~vif.HWRITE && vif.uart_irq) begin                
                 vif.HTRANS <= 2'b10;
                 vif.HREADY <= 1'b1;
                 vif.HSEL <= 1'b1;         

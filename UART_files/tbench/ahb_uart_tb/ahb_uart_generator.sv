@@ -1,7 +1,7 @@
 import ahb_uart_pkg::ahb_uart_transaction;
 
 class ahb_uart_generator
-#(parameter NUM_TESTS=3) 
+#(parameter NUM_TESTS=200) 
 ;
     mailbox drv_mbx;
     mailbox num_outstanding_tests;

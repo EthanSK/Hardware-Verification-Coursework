@@ -28,7 +28,8 @@ class ahb_uart_tx_monitor
                     for (int j = 0; j < 8; j++) @ (posedge vif.baud_tick);
                     tx_out[i] = vif.RsTx; //sample it right in the middle of the oversample cycle so that it is the most stable it can be...otherwise it don't work
                     for (int j = 0; j < 8; j++) @ (posedge vif.baud_tick); //wait for 16 baud ticks because it's oversampled
-                    // @ (posedge vif.clk);
+                    vif.RsRx = vif.RsTx; //send the tx output directly back into the rx input
+                    
                 end //sample the output bits
 
                 d_out = tx_out[TX_OUT_SIZE-2:1]; //remove the start and stop bits
@@ -36,7 +37,8 @@ class ahb_uart_tx_monitor
                 // $display ("id: %d Actual: %d RealExpected: %d", t.test_id, d_out[7:0], t.HWDATA[7:0]); 
                 t.RsTx_data = d_out;
                 scb_mbx.put(t);
-             end
+
+               end
         end
         
     endtask

@@ -27,9 +27,9 @@ class ahb_uart_tx_driver;
             vif.parity_fault_injection <= t.parity_fault_injection;
             @(posedge vif.clk);
             vif.HWDATA <= t.HWDATA;
-            // vif.HWRITE <= 1'b0;
+            vif.HWRITE <= 1'b0;
             vif.HSEL <= 1'b0;
-            // vif.HTRANS <= 2'b00;            
+            vif.HTRANS <= 2'b00;            
   
             @(posedge vif.clk);
             @(posedge vif.clk); //this posedge clock saved my life. without it everything breaks.

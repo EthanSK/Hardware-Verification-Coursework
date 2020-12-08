@@ -14,6 +14,7 @@ interface ahb_uart_if(input bit clk, input bit baud_tick);
     //Serial Port Signals
     logic          RsRx;  //logic from RS-232
     logic         RsTx;  //logic to RS-232 //output
+    
     //UART Interrupt
 
     logic  uart_irq;  //Interrupt //output

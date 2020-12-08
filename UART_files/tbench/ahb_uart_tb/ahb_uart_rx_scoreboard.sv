@@ -26,10 +26,10 @@ class ahb_uart_rx_scoreboard;
 
     function bit check_data(ahb_uart_transaction t);
         if (t.HWDATA[7:0] == t.HRDATA[7:0]) begin  
-            $display("[Rx scb] PASS! Input data bits %d is equal to output data vector %d", t.HRDATA[7:0], t.RsTx_data[7:0]);
+            $display("[Rx scb] PASS! Input data bits %d is equal to output data vector %d",t.RsTx_data[7:0],  t.HRDATA[7:0]);
             return 1'b1;
         end else begin
-            $display("[Rx scb] FAIL! Input data bits %d is NOT equal to output data vector %d", t.HRDATA[7:0], t.RsTx_data[7:0]);
+            $display("[Rx scb] FAIL! Input data bits %d is NOT equal to output data vector %d",t.RsTx_data[7:0], t.HRDATA[7:0]);
             return 1'b0;
         end
     endfunction

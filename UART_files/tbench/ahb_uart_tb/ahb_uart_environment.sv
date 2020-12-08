@@ -30,6 +30,7 @@ class ahb_uart_environment;
         rx_mon = new;
         gen = new;
         tx_scb_mbx = new();
+        rx_scb_mbx = new();
         drv_mbx = new();
         tx_tr_mbx = new();
         rx_tr_mbx = new();
@@ -61,13 +62,16 @@ class ahb_uart_environment;
         tx_drv.vif = vif;
         tx_mon.vif = vif;
         tx_scb.vif = vif;
+        rx_mon.vif = vif;
         rx_scb.vif = vif;
 
         fork
             gen.run(); 
             tx_mon.run();
+            rx_mon.run();
             tx_drv.run();
             tx_scb.run();
+            rx_scb.run();
         join_any
         
         #40;

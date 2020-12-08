@@ -6,7 +6,6 @@ class ahb_uart_rx_monitor
 ;
     virtual ahb_uart_if vif;
     mailbox scb_mbx;
-    mailbox tx_tr_mbx;
     mailbox rx_tr_mbx;
  
  
@@ -21,7 +20,6 @@ class ahb_uart_rx_monitor
                 vif.HTRANS <= 2'b10;
                 vif.HREADY <= 1'b1;
                 vif.HSEL <= 1'b1;
-                vif.parity_fault_injection <= t.parity_fault_injection;
                 @(posedge vif.clk);
                 vif.HSEL <= 1'b0;
                 vif.HTRANS <= 2'b00;    

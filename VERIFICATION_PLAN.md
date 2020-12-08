@@ -1,0 +1,30 @@
+# Verification Plan
+
+## UART TX
+- Check that the 9 bit input data vector is correctly transformed to serial data at the correct baud rate.
+- Ensure tx_start goes high before transmitting the data.
+- Ensure tx_done goes high after the data is transmitted.
+
+## UART RX
+- Read the serial Rx input data at the correct baud rate and check it matches the output vector
+- Ensure rx_done is high after the receiving is done.
+
+## Parity Gen
+- Check that the bottom 8 bits of the output data match the input data
+- Confirm the parity bit is correct under both even and odd parity (randomly choose one) and with an occasional parity fault injection with a custom distribution.
+
+## Parity Check
+- Check that PARITYERR is asserted when the parity bit is incorrect for both even and odd parity, and with an occasional parity fault injection with a custom distribution.
+
+## AHBUART
+- Test overall transmission through the UART. Check the bottom 8 bits of HWDATA equate to the first 8 bits sent at the transmitter end.
+- Push multiple data vectors through the UART at once to ensure the FIFO mechanism works as intended. When the HREADYOUT is low, stop sending data through until it becomes high again (at which point we know the FIFO has more space to hold more data).
+- Check that parity is correct for both even and odd parity, and with an occasional parity fault injection with a custom distribution.
+- Ensure the AHBUART works at these baud rates: 110, 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 38400, 57600, 115200, 128000 and 256000
+
+
+
+small tests for parity gen and check
+maybe small test for fifo and baudgen
+testbenches for uart tx and rx
+testbenhc for uart as a whole - test back to back ahb_uart (tx goes in as rx)

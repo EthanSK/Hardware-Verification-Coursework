@@ -39,22 +39,22 @@ assign PARITYERR =
 
 endmodule
 
-// module paritychecktest();
+module parity_check_sanity_test();
 
-// wire parity_err;
+    wire parity_err;
 
-// PARITY_CHECK
-//     #(.ORIG_DATA_IN_WIDTH(8))
-// uPARITY_CHECK
-// (
-//     .is_even_parity(1'b1),
-//     .data_in_parity(9'b010101010),
-//     .PARITYERR(parity_err)
-// );    
+    PARITY_CHECK
+        #(.ORIG_DATA_IN_WIDTH(8))
+    uPARITY_CHECK
+    (
+        .is_even_parity(1'b1),
+        .data_in_parity(9'b010101010),
+        .PARITYERR(parity_err)
+    );    
 
-// initial begin
-//     #100
-//     $display("%b", parity_err);
-// end
+    initial begin
+        #100
+        $display("%b", parity_err);
+    end
 
-// endmodule
+endmodule

@@ -52,6 +52,7 @@ class ahb_uart_environment;
         rx_mon.scb_mbx = rx_scb_mbx;
 
         tx_scb.num_outstanding_tests = num_outstanding_tests;
+        rx_scb.num_outstanding_tests = num_outstanding_tests;
         gen.num_outstanding_tests = num_outstanding_tests;
 
     endfunction
@@ -60,6 +61,7 @@ class ahb_uart_environment;
         tx_drv.vif = vif;
         tx_mon.vif = vif;
         tx_scb.vif = vif;
+        rx_scb.vif = vif;
 
         fork
             gen.run(); 
@@ -84,6 +86,9 @@ class ahb_uart_environment;
         //TODO: - fork join any for rx AFTER the tx is done. theerofre we can reuse the vif and the gen...do it here as well after the artificial delay so we can guarantee it runs only after
 
         $display ("T=%0t Tx Num tests passed: %0d | Num tests failed: %0d", $time, tx_scb.num_passed, tx_scb.num_failed);
+
+        $display ("T=%0t Rx Num tests passed: %0d | Num tests failed: %0d", $time, rx_scb.num_passed, rx_scb.num_failed);
+        
 
     endtask
 endclass

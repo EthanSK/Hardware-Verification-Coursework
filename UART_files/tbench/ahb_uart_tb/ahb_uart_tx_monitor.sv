@@ -33,7 +33,7 @@ class ahb_uart_tx_monitor
 
                 d_out = tx_out[TX_OUT_SIZE-2:1]; //remove the start and stop bits
                 
-                $display ("id: %d Actual: %d RealExpected: %d", t.test_id, d_out[7:0], t.HWDATA[7:0]); //TODO: - remove
+                // $display ("id: %d Actual: %d RealExpected: %d", t.test_id, d_out[7:0], t.HWDATA[7:0]); 
                 t.RsTx_data = d_out;
                 scb_mbx.put(t);
              end

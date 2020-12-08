@@ -36,14 +36,13 @@ class ahb_uart_tx_scoreboard;
     endfunction
 
     function bit check_parity(ahb_uart_transaction t);
-        // return 1'b1; //TODO: remove
-        //we check for even parity (set in tb top initial block)
+         //we check for even parity (set in tb top initial block)
         //there should be an even number of 1s for even parity, hence xoring them would give 0
-        if (vif.PARITYSEL ? ^t.RsTx_data[8:0] : ~^t.RsTx_data[8:0]) begin  
-            $display("PASS! Parity bit %d is correct for data %d", t.RsTx_data[8], t.RsTx_data[7:0]);
+        if ((~^t.RsTx_data[8:0]) ^ t.PARITYSEL ^ t.parity_fault_injection) begin  
+            $display("PASS! Parity bit %b is correct for data: %b, PARITYSEL: %b, parity_fault_injection: %b", t.RsTx_data[8], t.RsTx_data[7:0], t.PARITYSEL, t.parity_fault_injection);
             return 1'b1;
         end else begin
-            $display("FAIL! Parity bit %d is not correct for data %d", t.RsTx_data[8], t.RsTx_data[7:0]);
+            $display("FAIL! Parity bit %b is not correct for data: %b, PARITYSEL: %b, parity_fault_injection: %b", t.RsTx_data[8], t.RsTx_data[7:0], t.PARITYSEL, t.parity_fault_injection);
             return 1'b0;
         end
     endfunction

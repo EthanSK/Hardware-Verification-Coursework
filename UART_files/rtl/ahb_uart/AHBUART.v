@@ -77,13 +77,13 @@ module AHBUART(
   wire uart_wr;
   wire uart_rd;
   
-  //wires between FIFO and TX/RX
-  wire [7:0] tx_data;
-  wire [7:0] rx_data;
-  wire [31:0] status;
 
+  //wires between FIFO and TX/RX
   wire [8:0] rx_data_parity;
   wire [8:0] tx_data_parity;
+
+  wire [31:0] status;
+
 
   //FIFO Status
   wire tx_full;

@@ -35,7 +35,7 @@ module ahb_uart_testbench
         .uart_irq(_if.uart_irq),
 
         .PARITYSEL(_if.PARITYSEL),
-        .parity_fault_injection(1'b0),
+        .parity_fault_injection(_if.parity_fault_injection),
         .PARITYERR(_if.PARITYERR),
         .baud_rate(BAUD_RATE)
         );
@@ -47,7 +47,6 @@ module ahb_uart_testbench
 
         clk <= 0;
         _if.HRESETn <= 0;
-        _if.PARITYSEL <= 1'b0; //even parity        
         _if.RsRx <= 1'b1; //put on stop bit
          #40 _if.HRESETn <= 1;
         

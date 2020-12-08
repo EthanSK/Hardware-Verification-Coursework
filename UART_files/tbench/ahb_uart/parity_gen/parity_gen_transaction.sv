@@ -3,6 +3,11 @@ class parity_gen_transaction;
     rand bit [7:0] d_in; 
     rand bit is_even_parity;
     rand bit parity_fault_injection;
+    constraint parity_fault_injection_dist {
+        parity_fault_injection dist {
+            0 :/ 90,
+            1 :/ 10 };
+    }
     bit [8:0] d_out; 
 
     function void print(string tag="");

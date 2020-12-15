@@ -6,11 +6,25 @@ class parity_check_scoreboard;
     int num_passed = 0;
     int num_failed = 0;
 
+    covergroup cg with function sample(parity_check_transaction t);
+        
+        even_odd_parity: coverpoint t.is_even_parity {
+            bins even_parity = {1};
+            bins odd_parity = {0};
+        }
+
+    endgroup
+
+    function new();
+        cg = new();
+    endfunction
+
     task run();
         forever begin
             parity_check_transaction t;
             scb_mbx.get(t);
             t.print("Scoreboard");
+            cg.sample(t);
             if (
                  check_parity(t)
             )

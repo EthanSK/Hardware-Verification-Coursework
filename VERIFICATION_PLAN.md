@@ -17,7 +17,7 @@
 - Check that PARITYERR is asserted when the parity bit is incorrect for both even and odd parity, and with an occasional parity fault injection with a custom distribution.
 
 ## AHBUART
-- Test overall transmission and receiving through the UART. Check the bottom 8 bits of HWDATA equate to the first 8 bits sent at the transmitter end. Then feed that output back into the Rx receiver terminal simultaneously and ensure HRDATA matches.
+- Test overall transmission and receiving through the UART. Check the bottom 8 bits of HWDATA equate to the first 8 bits sent at the transmitter end. Then feed that output back into the Rx receiver terminal simultaneously and ensure HRDATA matches the original HWDATA.
 - Push multiple data vectors through the UART at once to ensure the FIFO mechanism works as intended. When the HREADYOUT is low, stop sending data through until it becomes high again (at which point we know the FIFO has more space to hold more data).
 - Check that parity is generated and received correctly for both even and odd parity, and with an occasional parity fault injection with a custom distribution.
 - Ensure the AHBUART works at these baud rates: 110, 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 38400, 57600, 115200, 128000 and 256000

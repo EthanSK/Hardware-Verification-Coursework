@@ -7,12 +7,45 @@ class ahb_uart_rx_scoreboard;
     int num_passed = 0;
     int num_failed = 0;
 
+        covergroup cg with function sample(ahb_uart_transaction t);
+        
+        even_odd_d_in: coverpoint ^t.HRDATA[7:0] {
+            bins even = {0};
+            bins odd = {1};
+        }
+
+        even_odd_parity: coverpoint t.PARITYSEL {
+            bins odd_parity = {1};
+            bins even_parity = {0};
+        }
+
+        parity_fault_injection: coverpoint t.parity_fault_injection {
+            bins no_fault_inj = {0};
+            bins fault_inj = {1};
+        }
+        
+        range_HRDATA_vals: coverpoint t.HRDATA[7:0] {        
+            bins lo = {[0:63]};
+            bins med_lo = {[64:127]};
+            bins med_hi = {[128:191]};
+            bins hi = {[192:256]};
+        }
+
+        all: cross range_HRDATA_vals, even_odd_parity, even_odd_d_in, parity_fault_injection;
+
+    endgroup
+
+    function new();
+        cg = new();
+    endfunction
+
     task run();
         forever begin
             ahb_uart_transaction t;
             int ignore;
             scb_mbx.get(t);
             t.print("Rx Scoreboard");
+            cg.sample(t);
             if (check_data(t) && check_parity(t))
             begin
                 num_passed = num_passed + 1;

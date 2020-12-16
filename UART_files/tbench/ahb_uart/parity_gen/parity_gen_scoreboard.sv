@@ -6,11 +6,37 @@ class parity_gen_scoreboard;
     int num_passed = 0;
     int num_failed = 0;
 
+     covergroup cg with function sample(parity_gen_transaction t);
+        
+        even_odd_parity: coverpoint t.is_even_parity {
+            bins even_parity = {1};
+            bins odd_parity = {0};
+        }
+
+        parity_fault_injection: coverpoint t.parity_fault_injection {
+            bins no_fault_inj = {0};
+            bins fault_inj = {1};
+        }
+
+        even_odd_d_in: coverpoint ^t.d_in {
+            bins even = {0};
+            bins odd = {1};
+        }
+
+        all: cross even_odd_parity, parity_fault_injection, even_odd_d_in;
+
+    endgroup
+
+    function new();
+        cg = new();
+    endfunction
+
     task run();
         forever begin
             parity_gen_transaction t;
             scb_mbx.get(t);
             t.print("Scoreboard");
+            cg.sample(t);
             if (
                 check_data(t) &&
                 check_parity(t)

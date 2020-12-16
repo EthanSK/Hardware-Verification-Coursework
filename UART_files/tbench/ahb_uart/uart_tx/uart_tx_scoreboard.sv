@@ -6,11 +6,35 @@ class uart_tx_scoreboard;
     int num_passed = 0;
     int num_failed = 0;
 
+     covergroup cg with function sample(uart_tx_transaction t);
+        
+        even_odd_d_in: coverpoint ^t.d_in {
+            bins even = {0};
+            bins odd = {1};
+        }
+
+        range_din_vals: coverpoint t.d_in {        
+            bins lo = {[0:127]};
+            bins med = {[128:255]};
+            bins hi = {[256:512]};
+         }
+
+
+        all: cross range_din_vals, even_odd_d_in;
+
+    endgroup
+
+    function new();
+        cg = new();
+    endfunction
+
+
     task run();
         forever begin
             uart_tx_transaction t;
             scb_mbx.get(t);
             t.print("Scoreboard");
+            cg.sample(t);
             if (t.d_in == t.d_out) begin
                 $display("PASS! Input vector %d is equal to output sequence of bits %d", t.d_in, t.d_out);
                 num_passed = num_passed + 1;

@@ -13,6 +13,18 @@ class parity_check_scoreboard;
             bins odd_parity = {0};
         }
 
+        parity_fault_injection: coverpoint t.parity_fault_injection {
+            bins no_fault_inj = {0};
+            bins fault_inj = {1};
+        }
+
+        even_odd_d_in: coverpoint ^t.d_in {
+            bins even = {0};
+            bins odd = {1};
+        }
+
+        all: cross even_odd_parity, parity_fault_injection, even_odd_d_in;
+
     endgroup
 
     function new();

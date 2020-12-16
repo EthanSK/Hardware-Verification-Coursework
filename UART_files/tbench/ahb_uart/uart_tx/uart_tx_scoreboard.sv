@@ -15,9 +15,10 @@ class uart_tx_scoreboard;
 
         range_din_vals: coverpoint t.d_in {        
             bins lo = {[0:127]};
-            bins med = {[128:255]};
-            bins hi = {[256:512]};
-         }
+            bins med_lo = {[128:255]};
+            bins med_hi = {[256:383]};
+            bins hi = {[384:512]};
+        }
 
 
         all: cross range_din_vals, even_odd_d_in;

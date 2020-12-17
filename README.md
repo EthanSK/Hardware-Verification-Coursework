@@ -82,7 +82,7 @@ JasperGold: `jaspergold_logs/fifo.txt`
 
 #### AHB UART
 TCL: `UART_files/assertions/ahbuart.tcl`   
-JasperGold: `testbench_logs/uart_rx.txt`
+JasperGold: `testbench_logs/ahbuart.txt`
 
 #### Uart Tx
 TCL: `UART_files/assertions/uart_tx.tcl`

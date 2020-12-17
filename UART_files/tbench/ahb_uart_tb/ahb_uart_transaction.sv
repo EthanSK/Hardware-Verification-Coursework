@@ -1,3 +1,5 @@
+//Ethan Sarif-Kattan & LH Lee
+
 class ahb_uart_transaction;
 
     rand bit [31:0] HWDATA;

@@ -1,3 +1,5 @@
+//Ethan Sarif-Kattan & LH Lee
+
 import ahblite_sys_pkg::*; //have to import * - importing each one manually gives errors about not being able to find it
 
 class ahblite_sys_environment;

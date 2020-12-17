@@ -1,3 +1,5 @@
+//Ethan Sarif-Kattan & LH Lee
+
 import uart_rx_pkg::uart_rx_transaction;
 
 class uart_rx_generator

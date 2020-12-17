@@ -1,3 +1,5 @@
+//Ethan Sarif-Kattan & LH Lee
+
 import ahb_uart_pkg::ahb_uart_transaction;
 
 //this class monitors the output on the tx line of the uart

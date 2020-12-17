@@ -1,3 +1,5 @@
+//Ethan Sarif-Kattan & LH Lee
+
 class parity_check_transaction;
 
     rand bit [8:0] d_in; //with parity

@@ -1,3 +1,5 @@
+//Ethan Sarif-Kattan & LH Lee
+
 class ahblite_sys_transaction;
     
     rand bit [7:0] d_in; //goes to RsRx terminal (parity will be calculated in the driver)

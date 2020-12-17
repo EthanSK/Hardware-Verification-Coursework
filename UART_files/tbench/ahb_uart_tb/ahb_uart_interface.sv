@@ -1,3 +1,5 @@
+//Ethan Sarif-Kattan & LH Lee
+
 interface ahb_uart_if(input bit clk, input bit baud_tick);
     logic          HRESETn;
     logic   [31:0] HADDR;

@@ -1,3 +1,5 @@
+//Ethan Sarif-Kattan & LH Lee
+
 import uart_tx_pkg::*; //have to import * - importing each one manually gives errors about not being able to find it
 
 class uart_tx_environment;

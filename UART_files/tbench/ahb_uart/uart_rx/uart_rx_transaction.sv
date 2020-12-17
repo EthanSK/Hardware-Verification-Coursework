@@ -1,3 +1,5 @@
+//Ethan Sarif-Kattan & LH Lee
+
 class uart_rx_transaction;
 
     rand bit [8:0] d_in; //serial data coming in

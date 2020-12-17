@@ -1,3 +1,5 @@
+//Ethan Sarif-Kattan & LH Lee
+
 package uart_rx_pkg;
     `include "uart_rx_transaction.sv"
     `include "uart_rx_generator.sv"

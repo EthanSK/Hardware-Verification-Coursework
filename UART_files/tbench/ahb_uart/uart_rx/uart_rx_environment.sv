@@ -1,3 +1,5 @@
+//Ethan Sarif-Kattan & LH Lee
+
 import uart_rx_pkg::*; //have to import * - importing each one manually gives errors about not being able to find it
 
 class uart_rx_environment;

@@ -1,3 +1,5 @@
+//Ethan Sarif-Kattan & LH Lee
+
 import parity_gen_pkg::*; //have to import * - importing each one manually gives errors about not being able to find it
 
 class parity_gen_environment;

@@ -1,3 +1,5 @@
+//Ethan Sarif-Kattan & LH Lee
+
 import ahblite_sys_pkg::ahblite_sys_test;
 
 module ahblite_sys_tb

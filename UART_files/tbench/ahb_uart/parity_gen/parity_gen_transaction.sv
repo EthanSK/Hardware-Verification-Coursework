@@ -1,3 +1,5 @@
+//Ethan Sarif-Kattan & LH Lee
+
 class parity_gen_transaction;
 
     rand bit [7:0] d_in; 

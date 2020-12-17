@@ -1,3 +1,5 @@
+//Ethan Sarif-Kattan & LH Lee
+
 package parity_check_pkg;
     `include "parity_check_transaction.sv"
     `include "parity_check_generator.sv"

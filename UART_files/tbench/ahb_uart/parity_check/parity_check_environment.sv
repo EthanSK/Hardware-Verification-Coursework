@@ -1,3 +1,5 @@
+//Ethan Sarif-Kattan & LH Lee
+
 import parity_check_pkg::*; //have to import * - importing each one manually gives errors about not being able to find it
 
 class parity_check_environment;

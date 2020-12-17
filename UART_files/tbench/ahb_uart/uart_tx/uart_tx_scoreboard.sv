@@ -1,3 +1,5 @@
+//Ethan Sarif-Kattan & LH Lee
+
 import uart_tx_pkg::uart_tx_transaction;
 
 

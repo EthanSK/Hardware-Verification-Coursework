@@ -1,3 +1,5 @@
+//Ethan Sarif-Kattan & LH Lee
+
 package ahb_uart_pkg;
     `include "ahb_uart_transaction.sv"
     `include "ahb_uart_generator.sv"

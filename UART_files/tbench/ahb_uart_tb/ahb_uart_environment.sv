@@ -1,3 +1,5 @@
+//Ethan Sarif-Kattan & LH Lee
+
 import ahb_uart_pkg::*; //have to import * - importing each one manually gives errors about not being able to find it
 
 class ahb_uart_environment;

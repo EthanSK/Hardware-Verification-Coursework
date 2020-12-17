@@ -1,3 +1,5 @@
+//Ethan Sarif-Kattan & LH Lee
+
 import parity_gen_pkg::parity_gen_test;
 
 module parity_gen_testbench;

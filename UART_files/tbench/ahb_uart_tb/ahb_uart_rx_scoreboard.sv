@@ -1,3 +1,5 @@
+//Ethan Sarif-Kattan & LH Lee
+
 import ahb_uart_pkg::ahb_uart_transaction;
 
 class ahb_uart_rx_scoreboard;

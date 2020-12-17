@@ -1,3 +1,5 @@
+//Ethan Sarif-Kattan & LH Lee
+
 import ahb_uart_pkg::ahb_uart_test;
 
 module ahb_uart_testbench

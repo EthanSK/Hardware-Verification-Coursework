@@ -1,3 +1,5 @@
+//Ethan Sarif-Kattan & LH Lee
+
 interface uart_rx_if(input bit clk, input bit baud_tick);
     logic                resetn;
     logic                rx;

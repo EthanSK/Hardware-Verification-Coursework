@@ -1,3 +1,5 @@
+//Ethan Sarif-Kattan & LH Lee
+
 package ahblite_sys_pkg;
     `include "ahblite_sys_transaction.sv"
     `include "ahblite_sys_generator.sv"

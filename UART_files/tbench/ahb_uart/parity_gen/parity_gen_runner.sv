@@ -1,3 +1,5 @@
+//Ethan Sarif-Kattan & LH Lee
+
 import parity_gen_pkg::parity_gen_transaction;
 
 class parity_gen_runner; //easier in this case to combine monitor and driver to sync correctly

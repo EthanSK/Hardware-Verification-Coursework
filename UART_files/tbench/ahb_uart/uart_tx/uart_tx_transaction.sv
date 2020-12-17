@@ -1,3 +1,5 @@
+//Ethan Sarif-Kattan & LH Lee
+
 class uart_tx_transaction;
 
     rand bit [8:0] d_in; //this represents the input vector

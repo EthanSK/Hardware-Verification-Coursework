@@ -1,3 +1,5 @@
+//Ethan Sarif-Kattan & LH Lee
+
 interface ahblite_sys_if(input bit clk, input bit baud_tick);
     //Serial Port Signals
     logic           RsRx;  //logic from RS-232

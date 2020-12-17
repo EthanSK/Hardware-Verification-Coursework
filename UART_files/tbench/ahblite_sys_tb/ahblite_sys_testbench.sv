@@ -4,7 +4,7 @@ module ahblite_sys_tb
 #(parameter BAUD_RATE=18'd19200)
 ;
 
-reg RESET, CLK;
+reg CLK;
 reg slow_clk;
 reg baud_tick;
 wire [7:0] LED;
@@ -16,7 +16,7 @@ always #20ns slow_clk = ~slow_clk; //slow clock for baudgen
 
 AHBLITE_SYS dut(
     .CLK(CLK),
-    .RESET(_if.RESET),
+    .RESET(_if.RESETn), //its active low!!!
     .LED(_if.LED),
     .RsRx(_if.RsRx),
     .RsTx(_if.RsTx)
@@ -26,7 +26,7 @@ BAUDGEN
 #(.CLOCK_HZ(25_000_000))
 uBAUDGEN(
     .clk(slow_clk),
-    .resetn(_if.RESET),
+    .resetn(_if.RESETn),
     .baud_rate(BAUD_RATE),
     .baudtick(baud_tick)
 );
@@ -36,9 +36,15 @@ initial
         automatic ahblite_sys_test t = new;        
         
         $display ("T=%0t [Testbench] Testbench starting...", $time);
-        RESET=0;
-        #60 RESET=1;
 
+        CLK <= 0;
+        slow_clk <= 0;
+        _if.baud_rate = BAUD_RATE;
+        _if.RESETn=0;
+        _if.RsRx <= 1'b1; //put on stop bit
+         #60 _if.RESETn=1;
+
+        t.env.vif = _if;
         fork
             t.run();            
         join

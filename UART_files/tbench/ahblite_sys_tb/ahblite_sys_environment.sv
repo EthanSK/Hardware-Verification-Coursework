@@ -9,9 +9,7 @@ class ahblite_sys_environment;
 
     mailbox scb_mbx;
     mailbox drv_mbx;
-
-    mailbox tr_mbx; // tx transactions tht we can get corresponding input data from
- 
+    mailbox tr_mbx; 
     mailbox num_outstanding_tests; //so we can finish after all tests have completed
 
     virtual ahblite_sys_if vif;
@@ -22,6 +20,7 @@ class ahblite_sys_environment;
         drv = new;
         scb = new;
         gen = new;
+
         scb_mbx = new();
         drv_mbx = new();
         tr_mbx = new();

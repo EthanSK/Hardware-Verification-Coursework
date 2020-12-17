@@ -1,7 +1,7 @@
 import uart_rx_pkg::uart_rx_transaction;
 
 class uart_rx_generator
-#(parameter NUM_TESTS=1000) 
+#(parameter NUM_TESTS=800) 
 ;
     mailbox drv_mbx;
     event drv_done;

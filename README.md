@@ -17,7 +17,7 @@ We wrote a verification plan outlining the steps we plan on testing and verifyin
 
 ## Unit Tests
 
-We created unit level testbenches for the components we modified. They all  These are:
+We created unit level testbenches for the components we modified. These are:
 
 - parity_check `UART_files/tbench/ahb_uart/parity_check`
 - parity_gen `UART_files/tbench/ahb_uart/parity_gen`
@@ -27,7 +27,7 @@ We created unit level testbenches for the components we modified. They all  Thes
 TODO: add paths to logfiles of running these tests
 TODO: coverage
 
-## Top Level Tes    ts
+## AHBUART E2E
 
 We tested the entire AHBUART as a whole. We fed input through HWDATA, then once that data travels to the RsTx terminal, we feed it right back in through the RsRx terminal. The data then goes back through the AHBUART and we monitor the results of HRDATA.
 
@@ -39,7 +39,7 @@ Coverage: `coverage/ahb_uart_tb.txt`
 
 TODO: logfiles & coverage
 
-## AHBLITE SYS Assembly test
+## AHBLITE SYS Integration test
 
 We tested the functionality of the AHBUART as a peripheral of the whole AHBLITE SYS. In assembly, we wait until the receive buffer is not empty, and if so, read the next value and transmit it back out. We then monitor that transmitted output in our testbench and check it against the driven input to Rx terminal. We added some functional coverage to ensure all edge cases that would occur internally were triggered.
 
@@ -50,6 +50,8 @@ Coverage: `coverage/ahblite_sys_tb.txt`
 
 ## Coverage
 We wrote covergroups for each testbench as outlined in the verification plan. The covergroups can be found in the scoreboard of each testbench mentioned above.
+
+
 
 TODO: path to coverage reports (both functional and code)
 

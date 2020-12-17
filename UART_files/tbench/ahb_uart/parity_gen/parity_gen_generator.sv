@@ -1,7 +1,7 @@
 import parity_gen_pkg::parity_gen_transaction;
 
 class parity_gen_generator
-#(parameter NUM_TESTS=1000) 
+#(parameter NUM_TESTS=800) 
 ;
     mailbox drv_mbx;
     event drv_done;

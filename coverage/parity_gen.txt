@@ -1,0 +1,626 @@
+QuestaSim-64 vcover 10.7c Coverage Utility 2018.08 Aug 17 2018
+Start time: 21:07:53 on Dec 17,2020
+vcover report -details /home/es5017/nfshome/hwcw2/ucdb_files/parity_gen.ucdb 
+Coverage Report by file with details
+
+=================================================================================
+=== File: rtl/ahb_uart/parity_gen.v
+=================================================================================
+Statement Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Stmts                            2         2         0    100.00
+
+================================Statement Details================================
+
+Statement Coverage for file rtl/ahb_uart/parity_gen.v --
+
+    1                                                
+    2                                                
+    3                                                
+    4                                                module PARITY_GEN
+    5                                                #(parameter DATA_IN_WIDTH=8)
+    6                                                (
+    7                                                    input wire is_even_parity, //1 for even 0 for odd
+    8                                                    input wire [DATA_IN_WIDTH-1:0] data_in,
+    9                                                    input wire parity_fault_injection,
+    10                                               
+    11                                                   output wire [DATA_IN_WIDTH:0] data_out
+    12                                               );
+    13                                                
+    14                                               // assign data_out = {^data_in[DATA_IN_WIDTH-1:0] ~^ is_even_parity ^ parity_fault_injection, data_in};
+    15                                               
+    16              1                        795     assign parity_bit = 
+    17                                                   is_even_parity 
+    18                                                   ?
+    19                                                   ^data_in[DATA_IN_WIDTH-1:0]
+    20                                                   :
+    21                                                   ~(^data_in[DATA_IN_WIDTH-1:0]);
+    22                                               
+    23              1                       1203     assign data_out = { 
+    24                                                   parity_fault_injection ? ~parity_bit : parity_bit
+    25                                                   ,
+    26                                                   data_in[DATA_IN_WIDTH-1:0]
+    27                                                   };
+    28                                               
+    29                                                
+    30                                               
+    31                                               endmodule
+    32                                               
+    33                                               module parity_gen_sanity_test();
+    34                                               
+    35                                                   wire [8:0] data_out;
+    36                                               
+    37                                                   PARITY_GEN
+    38                                                       #(.DATA_IN_WIDTH(8))
+    39                                                   uPARITY_GEN
+    40                                                   (
+    41                                                       .is_even_parity(1'b1),
+    42                                                       .data_in(8'b01000001),
+    43                                                       .data_out(data_out[8:0]),
+    44                                                       .parity_fault_injection(1'b0)
+    45                                                   );    
+    46                                               
+    47                                                   initial begin
+    48                                                       #100
+    49                                                       $display("Parity bit: %b", data_out[8]);
+    50                                                   end
+    51                                               
+    52                                               endmodule
+
+Branch Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Branches                         4         4         0    100.00
+
+================================Branch Details================================
+
+Branch Coverage for file rtl/ahb_uart/parity_gen.v --
+
+------------------------------------IF Branch------------------------------------
+    19                                       794     Count coming in to IF
+    19              1                        404         ^data_in[DATA_IN_WIDTH-1:0]
+    21              1                        390         ~(^data_in[DATA_IN_WIDTH-1:0]);
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    24                                      1202     Count coming in to IF
+    24              1                        119         parity_fault_injection ? ~parity_bit : parity_bit
+    24              2                       1083         parity_fault_injection ? ~parity_bit : parity_bit
+Branch totals: 2 hits of 2 branches = 100.00%
+
+
+Expression Coverage:
+    Enabled Coverage            Active   Covered    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    FEC Expression Terms             3         3         0    100.00
+
+================================Expression Details================================
+
+Expression Coverage for file rtl/ahb_uart/parity_gen.v --
+
+-----------Focused Expression View (Bimodal)------------
+Line       17 Item    1  (is_even_parity? ^data_in: ~^data_in)
+Expression totals: 3 of 3 input terms covered = 100.00%
+
+
+Toggle Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Toggle Bins                     40        40         0    100.00
+
+================================Toggle Details================================
+
+Toggle Coverage for File rtl/ahb_uart/parity_gen.v --
+
+       Line                                   Node      1H->0L      0L->1H  "Coverage"
+--------------------------------------------------------------------------------------
+
+Total Node Count     =         20 
+Toggled Node Count   =         20 
+Untoggled Node Count =          0 
+
+Toggle Coverage      =     100.00% (40 of 40 bins)
+
+=================================================================================
+=== File: tbench/ahb_uart/parity_gen/parity_gen_environment.sv
+=================================================================================
+Statement Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Stmts                           17        17         0    100.00
+
+================================Statement Details================================
+
+Statement Coverage for file tbench/ahb_uart/parity_gen/parity_gen_environment.sv --
+
+    1                                                import parity_gen_pkg::*; //have to import * - importing each one manually gives errors about not being able to find it
+    2                                                
+    3                                                class parity_gen_environment;
+    4                                                    parity_gen_scoreboard scb;
+    5                                                    parity_gen_runner runner;
+    6                                                    parity_gen_generator gen;
+    7                                                
+    8                                                    mailbox scb_mbx;
+    9                                                    mailbox drv_mbx;
+    10                                                
+    11                                                   virtual parity_gen_if vif;
+    12                                                   event drv_done;
+    13                                               
+    14                                                   function new();
+    15              1                          1             scb = new;
+    16              1                          1             runner = new;
+    17              1                          1             gen = new;
+    18              1                          1             scb_mbx = new();
+    19              1                          1             drv_mbx = new();
+    20                                                
+    21              1                          1             runner.scb_mbx = scb_mbx;    
+    22              1                          1             scb.scb_mbx = scb_mbx;
+    23                                                       
+    24              1                          1             runner.drv_mbx = drv_mbx;
+    25              1                          1             gen.drv_mbx = drv_mbx;
+    26                                               
+    27              1                          1             runner.drv_done = drv_done;
+    28              1                          1             gen.drv_done = drv_done;
+    29                                                   endfunction
+    30                                               
+    31                                                   virtual task run();
+    32              1                          1             runner.vif = vif;
+    33                                                       
+    34                                                       fork
+    35              1                          1                 gen.run();
+    36              1                          1                 runner.run();
+    37              1                          1                 scb.run();
+    38                                                        join_any
+    39                                                       
+    40                                                       
+    41              1                          1             #200ns;
+    42              1                          1             $display ("T=%0t Num tests passed: %0d | Num tests failed: %0d", $time, scb.num_passed, scb.num_failed);
+    43                                               
+    44                                                   endtask
+    45                                               endclass
+
+
+=================================================================================
+=== File: tbench/ahb_uart/parity_gen/parity_gen_generator.sv
+=================================================================================
+Statement Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Stmts                            8         8         0    100.00
+
+================================Statement Details================================
+
+Statement Coverage for file tbench/ahb_uart/parity_gen/parity_gen_generator.sv --
+
+    1                                                import parity_gen_pkg::parity_gen_transaction;
+    2                                                
+    3                                                class parity_gen_generator
+    4                                                #(parameter NUM_TESTS=800) 
+    5                                                ;
+    6                                                    mailbox drv_mbx;
+    7                                                    event drv_done;
+    8                                                     
+    9                                                    task run();
+    10              1                          1             for (int i = 0; i < NUM_TESTS; i++) begin
+    10              2                        800     
+    11              1                        800                 parity_gen_transaction tr = new;
+    12              1                        800                 void'(tr.randomize());
+    13              1                        800                 $display ("T=%0t [Generator] Created transaction at index %0d", $time, i);
+    14              1                        800                 drv_mbx.put(tr);
+    15              1                        800                 @(drv_done);
+    16                                                       end
+    17              1                          1             $display ("T=%0t [Generator] Done generation of %0d transactions", $time, NUM_TESTS);
+    18                                                   endtask
+    19                                               endclass
+
+
+=================================================================================
+=== File: tbench/ahb_uart/parity_gen/parity_gen_interface.sv
+=================================================================================
+Toggle Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Toggle Bins                     42        40         2     95.23
+
+================================Toggle Details================================
+
+Toggle Coverage for File tbench/ahb_uart/parity_gen/parity_gen_interface.sv --
+
+       Line                                   Node      1H->0L      0L->1H  "Coverage"
+--------------------------------------------------------------------------------------
+          1                              baud_tick           0           0        0.00 
+
+Total Node Count     =         21 
+Toggled Node Count   =         20 
+Untoggled Node Count =          1 
+
+Toggle Coverage      =      95.23% (40 of 42 bins)
+
+=================================================================================
+=== File: tbench/ahb_uart/parity_gen/parity_gen_runner.sv
+=================================================================================
+Statement Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Stmts                           12        12         0    100.00
+
+================================Statement Details================================
+
+Statement Coverage for file tbench/ahb_uart/parity_gen/parity_gen_runner.sv --
+
+    1                                                import parity_gen_pkg::parity_gen_transaction;
+    2                                                
+    3                                                class parity_gen_runner; //easier in this case to combine monitor and driver to sync correctly
+    4                                                    mailbox drv_mbx;
+    5                                                    mailbox scb_mbx;
+    6                                                    event drv_done;
+    7                                                    virtual parity_gen_if vif;
+    8                                                
+    9                                                    task run();
+    10              1                          1             $display ("T=%0t [Runner] Driver is starting...", $time);        
+    11              1                          1             forever begin
+    12                                                           parity_gen_transaction t;
+    13              1                        801                 $display ("T=%0t [Runner] Driver waiting for item...", $time);
+    14              1                        801                 drv_mbx.get(t); //blocks until next item is present
+    15              1                        800                 t.print("Driver");
+    16              1                        800                 vif.d_in <= t.d_in;
+    17              1                        800                 vif.is_even_parity <= t.is_even_parity;
+    18              1                        800                 vif.parity_fault_injection <= t.parity_fault_injection;
+    19              1                        800                 @(posedge vif.clk); 
+    20                                               
+    21              1                        800                 t.d_out = vif.d_out;
+    22              1                        800                 scb_mbx.put(t);
+    23                                               
+    24              1                        800                 ->drv_done;             
+    25                                                       end
+    26                                                   endtask
+    27                                               endclass
+
+
+=================================================================================
+=== File: tbench/ahb_uart/parity_gen/parity_gen_scoreboard.sv
+=================================================================================
+Statement Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Stmts                           17        12         5     70.58
+
+================================Statement Details================================
+
+Statement Coverage for file tbench/ahb_uart/parity_gen/parity_gen_scoreboard.sv --
+
+    1                                                import parity_gen_pkg::parity_gen_transaction;
+    2                                                
+    3                                                
+    4                                                class parity_gen_scoreboard;
+    5                                                    mailbox scb_mbx;
+    6               1                          1         int num_passed = 0;
+    7               1                          1         int num_failed = 0;
+    8                                                
+    9                                                     covergroup cg with function sample(parity_gen_transaction t);
+    10                                                       
+    11                                                       even_odd_parity: coverpoint t.is_even_parity {
+    12                                                           bins even_parity = {1};
+    13                                                           bins odd_parity = {0};
+    14                                                       }
+    15                                               
+    16                                                       parity_fault_injection: coverpoint t.parity_fault_injection {
+    17                                                           bins no_fault_inj = {0};
+    18                                                           bins fault_inj = {1};
+    19                                                       }
+    20                                               
+    21                                                       even_odd_d_in: coverpoint ^t.d_in {
+    22                                                           bins even = {0};
+    23                                                           bins odd = {1};
+    24                                                       }
+    25                                               
+    26                                                       all: cross even_odd_parity, parity_fault_injection, even_odd_d_in;
+    27                                               
+    28                                                   endgroup
+    29                                               
+    30                                                   function new();
+    31              1                          1             cg = new();
+    32                                                   endfunction
+    33                                               
+    34                                                   task run();
+    35              1                          1             forever begin
+    36                                                           parity_gen_transaction t;
+    37              1                        801                 scb_mbx.get(t);
+    38              1                        800                 t.print("Scoreboard");
+    39              1                        800                 cg.sample(t);
+    40                                                           if (
+    41                                                               check_data(t) &&
+    42                                                               check_parity(t)
+    43                                                           )
+    44                                                           begin
+    45              1                        800                     num_passed = num_passed + 1;
+    46                                                           end else begin
+    47              1                    ***0***                     num_failed = num_failed + 1;
+    48                                                           end
+    49                                                       end
+    50                                                   endtask
+    51                                               
+    52                                                   function bit check_data(parity_gen_transaction t);
+    53                                                       if (t.d_in == t.d_out[7:0]) begin
+    54              1                        800                 $display("PASS! Input %d is equal to output data %d", t.d_in, t.d_out[7:0]);
+    55              1                        800                 return 1'b1;
+    56                                                       end else begin
+    57              1                    ***0***                 $display("FAIL! Input %d is NOT equal to output data %d", t.d_in, t.d_out[7:0]);
+    58              1                    ***0***                 return 1'b0;
+    59                                                       end
+    60                                                   endfunction
+    61                                               
+    62                                                   function bit check_parity(parity_gen_transaction t);
+    63                                                       if (
+    64                                                           (~^t.d_out[8:0]) ~^ t.is_even_parity ^ t.parity_fault_injection
+    65                                                       ) begin
+    66              1                        800                 $display("PASS! Parity %b is correct", t.d_out[8]);
+    67              1                        800                 return 1'b1;
+    68                                                       end else begin
+    69              1                    ***0***                 $display("FAIL! Parity %b is incorrect", t.d_out[8]);
+    70              1                    ***0***                 return 1'b0;
+    71                                                       end
+    72                                                   endfunction
+    73                                               endclass
+
+Branch Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Branches                         6         3         3     50.00
+
+================================Branch Details================================
+
+Branch Coverage for file tbench/ahb_uart/parity_gen/parity_gen_scoreboard.sv --
+
+------------------------------------IF Branch------------------------------------
+    40                                       800     Count coming in to IF
+    40              1                        800                 if (
+    46              1                    ***0***                 end else begin
+Branch totals: 1 hit of 2 branches = 50.00%
+
+------------------------------------IF Branch------------------------------------
+    53                                       800     Count coming in to IF
+    53              1                        800             if (t.d_in == t.d_out[7:0]) begin
+    56              1                    ***0***             end else begin
+Branch totals: 1 hit of 2 branches = 50.00%
+
+------------------------------------IF Branch------------------------------------
+    63                                       800     Count coming in to IF
+    63              1                        800             if (
+    68              1                    ***0***             end else begin
+Branch totals: 1 hit of 2 branches = 50.00%
+
+
+Condition Coverage:
+    Enabled Coverage            Active   Covered    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    FEC Condition Terms              6         0         6      0.00
+
+================================Condition Details================================
+
+Condition Coverage for file tbench/ahb_uart/parity_gen/parity_gen_scoreboard.sv --
+
+----------------Focused Condition View-------------------
+Line       41 Item    1  (check_data(this,t) && check_parity(this,t))
+Condition totals: 0 of 2 input terms covered = 0.00%
+
+            Input Term   Covered  Reason for no coverage   Hint
+           -----------  --------  -----------------------  --------------
+    check_data(this,t)         N  '_0' not hit             Hit '_0'
+  check_parity(this,t)         N  '_0' not hit             Hit '_0'
+
+     Rows:       Hits  FEC Target              Non-masking condition(s)      
+ ---------  ---------  --------------------    -------------------------     
+  Row   1:    ***0***  check_data(this,t)_0    -                             
+  Row   2:          1  check_data(this,t)_1    check_parity(this,t)          
+  Row   3:    ***0***  check_parity(this,t)_0  check_data(this,t)            
+  Row   4:          1  check_parity(this,t)_1  check_data(this,t)            
+
+----------------Focused Condition View-------------------
+Line       53 Item    1  (t.d_in == t.d_out[7:0])
+Condition totals: 0 of 1 input term covered = 0.00%
+
+                Input Term   Covered  Reason for no coverage   Hint
+               -----------  --------  -----------------------  --------------
+  (t.d_in == t.d_out[7:0])         N  '_0' not hit             Hit '_0'
+
+     Rows:       Hits  FEC Target                  Non-masking condition(s)      
+ ---------  ---------  --------------------        -------------------------     
+  Row   1:    ***0***  (t.d_in == t.d_out[7:0])_0  -                             
+  Row   2:          1  (t.d_in == t.d_out[7:0])_1  -                             
+
+-----------Focused Condition View (Bimodal)--------------
+Line       64 Item    1  ((~^t.d_out ~^ t.is_even_parity) ^ t.parity_fault_injection)
+Condition totals: 0 of 3 input terms covered = 0.00%
+
+                  Input Term   Covered  Reason for no coverage                  Hint
+                 -----------  --------  --------------------------------------  --------------
+                   ~^t.d_out         N  Both rows hit for same output ->1      Hit either row for output ->0
+            t.is_even_parity         N  Both rows hit for same output ->1      Hit either row for output ->0
+    t.parity_fault_injection         N  Both rows hit for same output ->1      Hit either row for output ->0
+
+    Rows:   Hits(->0)   Hits(->1)  FEC Target                    Non-masking condition(s)           
+
+---------  ----------  ----------  --------------------          -----------------------------------
+ Row   1:           0           1  ~^t.d_out_0                   -                                  
+ Row   2:           0           1  ~^t.d_out_1                   -                                  
+ Row   3:           0           1  t.is_even_parity_0            -                                  
+ Row   4:           0           1  t.is_even_parity_1            -                                  
+ Row   5:           0           1  t.parity_fault_injection_0    -                                  
+ Row   6:           0           1  t.parity_fault_injection_1    -                                  
+
+
+
+=================================================================================
+=== File: tbench/ahb_uart/parity_gen/parity_gen_test.sv
+=================================================================================
+Statement Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Stmts                            2         2         0    100.00
+
+================================Statement Details================================
+
+Statement Coverage for file tbench/ahb_uart/parity_gen/parity_gen_test.sv --
+
+    1                                                import parity_gen_pkg::parity_gen_environment;
+    2                                                
+    3                                                class parity_gen_test;
+    4                                                    parity_gen_environment env;
+    5                                                
+    6                                                    function new();
+    7               1                          1             env = new;
+    8                                                     endfunction
+    9                                                
+    10                                                   task run();
+    11              1                          1             env.run();
+    12                                                   endtask     
+    13                                               endclass
+
+
+=================================================================================
+=== File: tbench/ahb_uart/parity_gen/parity_gen_testbench.sv
+=================================================================================
+Statement Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Stmts                            9         9         0    100.00
+
+================================Statement Details================================
+
+Statement Coverage for file tbench/ahb_uart/parity_gen/parity_gen_testbench.sv --
+
+    1                                                import parity_gen_pkg::parity_gen_test;
+    2                                                
+    3                                                module parity_gen_testbench;
+    4                                                
+    5                                                    reg clk;
+    6                                                    reg baud_tick;
+    7                                                
+    8                                                    parity_gen_if _if(clk, baud_tick);
+    9                                                
+    10              1                       1619         always #10ns clk = ~clk; //50 mhz clock
+    10              2                       1618     
+    11                                               
+    12                                                   PARITY_GEN
+    13                                                       #(.DATA_IN_WIDTH(8))
+    14                                                   DUT
+    15                                                   (
+    16                                                       .is_even_parity(_if.is_even_parity),
+    17                                                       .data_in(_if.d_in),
+    18                                                       .data_out(_if.d_out),
+    19                                                       .parity_fault_injection(_if.parity_fault_injection)
+    20                                                   );    
+    21                                               
+    22                                                   initial begin
+    23              1                          1             automatic parity_gen_test t = new;        
+    24              1                          1             $display ("T=%0t [Testbench] Testbench starting...", $time);
+    25                                               
+    26              1                          1             clk <= 0;
+    27              1                          1             t.env.vif = _if;
+    28                                                       fork
+    29              1                          1                 t.run();            
+    30                                                       join
+    31                                               
+    32              1                          1             $display ("T=%0t [Testbench] Testbench finishing...", $time);
+    33              1                          1             $stop;        
+    34                                                   end
+    35                                               
+    36                                               endmodule
+
+Toggle Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Toggle Bins                      4         2         2     50.00
+
+================================Toggle Details================================
+
+Toggle Coverage for File tbench/ahb_uart/parity_gen/parity_gen_testbench.sv --
+
+       Line                                   Node      1H->0L      0L->1H  "Coverage"
+--------------------------------------------------------------------------------------
+          6                              baud_tick           0           0        0.00 
+
+Total Node Count     =          2 
+Toggled Node Count   =          1 
+Untoggled Node Count =          1 
+
+Toggle Coverage      =      50.00% (2 of 4 bins)
+
+=================================================================================
+=== File: tbench/ahb_uart/parity_gen/parity_gen_transaction.sv
+=================================================================================
+Statement Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Stmts                            1         1         0    100.00
+
+================================Statement Details================================
+
+Statement Coverage for file tbench/ahb_uart/parity_gen/parity_gen_transaction.sv --
+
+    1                                                class parity_gen_transaction;
+    2                                                
+    3                                                    rand bit [7:0] d_in; 
+    4                                                    rand bit is_even_parity;
+    5                                                    rand bit parity_fault_injection;
+    6                                                    constraint parity_fault_injection_dist {
+    7                                                        parity_fault_injection dist {
+    8                                                            0 :/ 90,
+    9                                                            1 :/ 10 };
+    10                                                   }
+    11                                                   bit [8:0] d_out; 
+    12                                               
+    13                                                   function void print(string tag="");
+    14              1                       1600             $display ("T=%0t [Transaction] (Tag: %s) d_in=0x%0h d_out=0x%0h is_even_parity=%b parity_fault_injection=%b", $time, tag, d_in, d_out, is_even_parity, parity_fault_injection);
+    15                                                   endfunction
+    16                                               endclass
+
+
+COVERGROUP COVERAGE:
+-----------------------------------------------------------------------------------------------
+Covergroup                                             Metric       Goal    Status               
+                                                                                              
+-----------------------------------------------------------------------------------------------
+ TYPE /parity_gen_pkg/parity_gen_scoreboard/cg        100.00%        100    Covered              
+    covered/total bins:                                    14         14                      
+    missing/total bins:                                     0         14                      
+    % Hit:                                            100.00%        100                      
+    Coverpoint cg::even_odd_parity                    100.00%        100    Covered              
+        covered/total bins:                                 2          2                      
+        missing/total bins:                                 0          2                      
+        % Hit:                                        100.00%        100                      
+        bin even_parity                                   406          1    Covered              
+        bin odd_parity                                    394          1    Covered              
+    Coverpoint cg::parity_fault_injection             100.00%        100    Covered              
+        covered/total bins:                                 2          2                      
+        missing/total bins:                                 0          2                      
+        % Hit:                                        100.00%        100                      
+        bin no_fault_inj                                  720          1    Covered              
+        bin fault_inj                                      80          1    Covered              
+    Coverpoint cg::even_odd_d_in                      100.00%        100    Covered              
+        covered/total bins:                                 2          2                      
+        missing/total bins:                                 0          2                      
+        % Hit:                                        100.00%        100                      
+        bin even                                          402          1    Covered              
+        bin odd                                           398          1    Covered              
+    Cross cg::all                                     100.00%        100    Covered              
+        covered/total bins:                                 8          8                      
+        missing/total bins:                                 0          8                      
+        % Hit:                                        100.00%        100                      
+        bin <even_parity,no_fault_inj,even>               195          1    Covered              
+        bin <odd_parity,no_fault_inj,even>                175          1    Covered              
+        bin <even_parity,fault_inj,even>                   16          1    Covered              
+        bin <odd_parity,fault_inj,even>                    16          1    Covered              
+        bin <even_parity,no_fault_inj,odd>                166          1    Covered              
+        bin <odd_parity,no_fault_inj,odd>                 184          1    Covered              
+        bin <even_parity,fault_inj,odd>                    29          1    Covered              
+        bin <odd_parity,fault_inj,odd>                     19          1    Covered              
+
+TOTAL COVERGROUP COVERAGE: 100.00%  COVERGROUP TYPES: 1
+
+Total Coverage By File (code coverage only, filtered view): 71.59%
+
+End time: 21:07:53 on Dec 17,2020, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0

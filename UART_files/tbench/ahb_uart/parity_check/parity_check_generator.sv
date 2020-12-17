@@ -1,7 +1,7 @@
 import parity_check_pkg::parity_check_transaction;
 
 class parity_check_generator
-#(parameter NUM_TESTS=1000) 
+#(parameter NUM_TESTS=800) 
 ;
     mailbox drv_mbx;
     event drv_done;

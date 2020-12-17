@@ -1,0 +1,1121 @@
+QuestaSim-64 vcover 10.7c Coverage Utility 2018.08 Aug 17 2018
+Start time: 21:14:24 on Dec 17,2020
+vcover report -details /home/es5017/nfshome/hwcw2/ucdb_files/uart_tx.ucdb 
+Coverage Report by file with details
+
+=================================================================================
+=== File: rtl/ahb_uart/baudgen.v
+=================================================================================
+Statement Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Stmts                            6         6         0    100.00
+
+================================Statement Details================================
+
+Statement Coverage for file rtl/ahb_uart/baudgen.v --
+
+    1                                                //////////////////////////////////////////////////////////////////////////////////
+    2                                                //END USER LICENCE AGREEMENT                                                    //
+    3                                                //                                                                              //
+    4                                                //Copyright (c) 2012, ARM All rights reserved.                                  //
+    5                                                //                                                                              //
+    6                                                //THIS END USER LICENCE AGREEMENT ("LICENCE") IS A LEGAL AGREEMENT BETWEEN      //
+    7                                                //YOU AND ARM LIMITED ("ARM") FOR THE USE OF THE SOFTWARE EXAMPLE ACCOMPANYING  //
+    8                                                //THIS LICENCE. ARM IS ONLY WILLING TO LICENSE THE SOFTWARE EXAMPLE TO YOU ON   //
+    9                                                //CONDITION THAT YOU ACCEPT ALL OF THE TERMS IN THIS LICENCE. BY INSTALLING OR  //
+    10                                               //OTHERWISE USING OR COPYING THE SOFTWARE EXAMPLE YOU INDICATE THAT YOU AGREE   //
+    11                                               //TO BE BOUND BY ALL OF THE TERMS OF THIS LICENCE. IF YOU DO NOT AGREE TO THE   //
+    12                                               //TERMS OF THIS LICENCE, ARM IS UNWILLING TO LICENSE THE SOFTWARE EXAMPLE TO    //
+    13                                               //YOU AND YOU MAY NOT INSTALL, USE OR COPY THE SOFTWARE EXAMPLE.                //
+    14                                               //                                                                              //
+    15                                               //ARM hereby grants to you, subject to the terms and conditions of this Licence,//
+    16                                               //a non-exclusive, worldwide, non-transferable, copyright licence only to       //
+    17                                               //redistribute and use in source and binary forms, with or without modification,//
+    18                                               //for academic purposes provided the following conditions are met:              //
+    19                                               //a) Redistributions of source code must retain the above copyright notice, this//
+    20                                               //list of conditions and the following disclaimer.                              //
+    21                                               //b) Redistributions in binary form must reproduce the above copyright notice,  //
+    22                                               //this list of conditions and the following disclaimer in the documentation     //
+    23                                               //and/or other materials provided with the distribution.                        //
+    24                                               //                                                                              //
+    25                                               //THIS SOFTWARE EXAMPLE IS PROVIDED BY THE COPYRIGHT HOLDER "AS IS" AND ARM     //
+    26                                               //EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING     //
+    27                                               //WITHOUT LIMITATION WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR //
+    28                                               //PURPOSE, WITH RESPECT TO THIS SOFTWARE EXAMPLE. IN NO EVENT SHALL ARM BE LIABLE/
+    29                                               //FOR ANY DIRECT, INDIRECT, INCIDENTAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES OF ANY/
+    30                                               //KIND WHATSOEVER WITH RESPECT TO THE SOFTWARE EXAMPLE. ARM SHALL NOT BE LIABLE //
+    31                                               //FOR ANY CLAIMS, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, //
+    32                                               //TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE    //
+    33                                               //EXAMPLE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE EXAMPLE. FOR THE AVOIDANCE/
+    34                                               // OF DOUBT, NO PATENT LICENSES ARE BEING LICENSED UNDER THIS LICENSE AGREEMENT.//
+    35                                               //////////////////////////////////////////////////////////////////////////////////
+    36                                               
+    37                                               module BAUDGEN
+    38                                               #(parameter CLOCK_HZ = 50_000_000)
+    39                                               (
+    40                                                 input wire clk,
+    41                                                 input wire resetn,
+    42                                                 input wire [17:0] baud_rate,
+    43                                                 output wire baudtick
+    44                                               );
+    45                                               
+    46                                               
+    47                                               reg [21:0] count_reg;
+    48                                               wire [21:0] count_next;
+    49                                               wire [21:0] nth_clk_for_baud;//the nth clock tick that the baud should tick on
+    50                                               
+    51                                               //Counter
+    52              1                   22950411     always @ (posedge clk, negedge resetn)
+    53                                                 begin
+    54                                                   if(!resetn)
+    55              1                          2           count_reg <= 0;
+    56                                                   else
+    57              1                   22950409           count_reg <= count_next;
+    58                                               end
+    59                                               
+    60              1                          2     assign nth_clk_for_baud = (CLOCK_HZ / (baud_rate * 16));
+    61                                               
+    62                                               
+    63                                               //Baudrate  = 19200 = 50Mhz/(163*16)
+    64              1                   22950412     assign count_next = ((count_reg == nth_clk_for_baud) ? 0 : count_reg + 1'b1);
+    65                                               
+    66              1                   22950412     assign baudtick = ((count_reg == nth_clk_for_baud) ? 1'b1 : 1'b0);
+    67                                               
+    68                                               endmodule
+
+Branch Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Branches                         4         4         0    100.00
+
+================================Branch Details================================
+
+Branch Coverage for file rtl/ahb_uart/baudgen.v --
+
+------------------------------------IF Branch------------------------------------
+    54                                  22950411     Count coming in to IF
+    54              1                          2         if(!resetn)
+    56              1                   22950409         else
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    64                                  22950410     Count coming in to IF
+    64              1                     140800     assign count_next = ((count_reg == nth_clk_for_baud) ? 0 : count_reg + 1'b1);
+    64              2                   22809610     assign count_next = ((count_reg == nth_clk_for_baud) ? 0 : count_reg + 1'b1);
+Branch totals: 2 hits of 2 branches = 100.00%
+
+
+Condition Coverage:
+    Enabled Coverage            Active   Covered    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    FEC Condition Terms              1         1         0    100.00
+
+================================Condition Details================================
+
+Condition Coverage for file rtl/ahb_uart/baudgen.v --
+
+----------------Focused Condition View-------------------
+Line       64 Item    1  (count_reg == nth_clk_for_baud)
+Condition totals: 1 of 1 input term covered = 100.00%
+
+
+Expression Coverage:
+    Enabled Coverage            Active   Covered    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    FEC Expression Terms             1         1         0    100.00
+
+================================Expression Details================================
+
+Expression Coverage for file rtl/ahb_uart/baudgen.v --
+
+----------------Focused Expression View-----------------
+Line       66 Item    1  (count_reg == nth_clk_for_baud)
+Expression totals: 1 of 1 input term covered = 100.00%
+
+
+Toggle Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Toggle Bins                    174        37       137     21.26
+
+================================Toggle Details================================
+
+Toggle Coverage for File rtl/ahb_uart/baudgen.v --
+
+       Line                                   Node      1H->0L      0L->1H  "Coverage"
+--------------------------------------------------------------------------------------
+         41                                 resetn           0           1       50.00 
+         42                           baud_rate[9]           0           0        0.00 
+         42                           baud_rate[8]           0           0        0.00 
+         42                           baud_rate[7]           0           0        0.00 
+         42                           baud_rate[6]           0           0        0.00 
+         42                           baud_rate[5]           0           0        0.00 
+         42                           baud_rate[4]           0           0        0.00 
+         42                           baud_rate[3]           0           0        0.00 
+         42                           baud_rate[2]           0           0        0.00 
+         42                           baud_rate[1]           0           0        0.00 
+         42                          baud_rate[17]           0           0        0.00 
+         42                          baud_rate[16]           0           0        0.00 
+         42                          baud_rate[15]           0           0        0.00 
+         42                          baud_rate[14]           0           0        0.00 
+         42                          baud_rate[13]           0           0        0.00 
+         42                          baud_rate[12]           0           0        0.00 
+         42                          baud_rate[11]           0           0        0.00 
+         42                          baud_rate[10]           0           0        0.00 
+         42                           baud_rate[0]           0           0        0.00 
+         47                           count_reg[9]           0           0        0.00 
+         47                           count_reg[8]           0           0        0.00 
+         47                          count_reg[21]           0           0        0.00 
+         47                          count_reg[20]           0           0        0.00 
+         47                          count_reg[19]           0           0        0.00 
+         47                          count_reg[18]           0           0        0.00 
+         47                          count_reg[17]           0           0        0.00 
+         47                          count_reg[16]           0           0        0.00 
+         47                          count_reg[15]           0           0        0.00 
+         47                          count_reg[14]           0           0        0.00 
+         47                          count_reg[13]           0           0        0.00 
+         47                          count_reg[12]           0           0        0.00 
+         47                          count_reg[11]           0           0        0.00 
+         47                          count_reg[10]           0           0        0.00 
+         48                          count_next[9]           0           0        0.00 
+         48                          count_next[8]           0           0        0.00 
+         48                         count_next[21]           0           0        0.00 
+         48                         count_next[20]           0           0        0.00 
+         48                         count_next[19]           0           0        0.00 
+         48                         count_next[18]           0           0        0.00 
+         48                         count_next[17]           0           0        0.00 
+         48                         count_next[16]           0           0        0.00 
+         48                         count_next[15]           0           0        0.00 
+         48                         count_next[14]           0           0        0.00 
+         48                         count_next[13]           0           0        0.00 
+         48                         count_next[12]           0           0        0.00 
+         48                         count_next[11]           0           0        0.00 
+         48                         count_next[10]           0           0        0.00 
+         49                    nth_clk_for_baud[9]           0           0        0.00 
+         49                    nth_clk_for_baud[8]           0           0        0.00 
+         49                    nth_clk_for_baud[7]           0           0        0.00 
+         49                    nth_clk_for_baud[6]           0           0        0.00 
+         49                    nth_clk_for_baud[5]           0           0        0.00 
+         49                    nth_clk_for_baud[4]           0           0        0.00 
+         49                    nth_clk_for_baud[3]           0           0        0.00 
+         49                    nth_clk_for_baud[2]           0           0        0.00 
+         49                   nth_clk_for_baud[21]           0           0        0.00 
+         49                   nth_clk_for_baud[20]           0           0        0.00 
+         49                    nth_clk_for_baud[1]           0           0        0.00 
+         49                   nth_clk_for_baud[19]           0           0        0.00 
+         49                   nth_clk_for_baud[18]           0           0        0.00 
+         49                   nth_clk_for_baud[17]           0           0        0.00 
+         49                   nth_clk_for_baud[16]           0           0        0.00 
+         49                   nth_clk_for_baud[15]           0           0        0.00 
+         49                   nth_clk_for_baud[14]           0           0        0.00 
+         49                   nth_clk_for_baud[13]           0           0        0.00 
+         49                   nth_clk_for_baud[12]           0           0        0.00 
+         49                   nth_clk_for_baud[11]           0           0        0.00 
+         49                   nth_clk_for_baud[10]           0           0        0.00 
+         49                    nth_clk_for_baud[0]           0           0        0.00 
+
+Total Node Count     =         87 
+Toggled Node Count   =         18 
+Untoggled Node Count =         69 
+
+Toggle Coverage      =      21.26% (37 of 174 bins)
+
+=================================================================================
+=== File: rtl/ahb_uart/uart_tx.v
+=================================================================================
+Statement Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Stmts                           37        37         0    100.00
+
+================================Statement Details================================
+
+Statement Coverage for file rtl/ahb_uart/uart_tx.v --
+
+    1                                                //////////////////////////////////////////////////////////////////////////////////
+    2                                                //END USER LICENCE AGREEMENT                                                    //
+    3                                                //                                                                              //
+    4                                                //Copyright (c) 2012, ARM All rights reserved.                                  //
+    5                                                //                                                                              //
+    6                                                //THIS END USER LICENCE AGREEMENT (�LICENCE�) IS A LEGAL AGREEMENT BETWEEN      //
+    7                                                //YOU AND ARM LIMITED ("ARM") FOR THE USE OF THE SOFTWARE EXAMPLE ACCOMPANYING  //
+    8                                                //THIS LICENCE. ARM IS ONLY WILLING TO LICENSE THE SOFTWARE EXAMPLE TO YOU ON   //
+    9                                                //CONDITION THAT YOU ACCEPT ALL OF THE TERMS IN THIS LICENCE. BY INSTALLING OR  //
+    10                                               //OTHERWISE USING OR COPYING THE SOFTWARE EXAMPLE YOU INDICATE THAT YOU AGREE   //
+    11                                               //TO BE BOUND BY ALL OF THE TERMS OF THIS LICENCE. IF YOU DO NOT AGREE TO THE   //
+    12                                               //TERMS OF THIS LICENCE, ARM IS UNWILLING TO LICENSE THE SOFTWARE EXAMPLE TO    //
+    13                                               //YOU AND YOU MAY NOT INSTALL, USE OR COPY THE SOFTWARE EXAMPLE.                //
+    14                                               //                                                                              //
+    15                                               //ARM hereby grants to you, subject to the terms and conditions of this Licence,//
+    16                                               //a non-exclusive, worldwide, non-transferable, copyright licence only to       //
+    17                                               //redistribute and use in source and binary forms, with or without modification,//
+    18                                               //for academic purposes provided the following conditions are met:              //
+    19                                               //a) Redistributions of source code must retain the above copyright notice, this//
+    20                                               //list of conditions and the following disclaimer.                              //
+    21                                               //b) Redistributions in binary form must reproduce the above copyright notice,  //
+    22                                               //this list of conditions and the following disclaimer in the documentation     //
+    23                                               //and/or other materials provided with the distribution.                        //
+    24                                               //                                                                              //
+    25                                               //THIS SOFTWARE EXAMPLE IS PROVIDED BY THE COPYRIGHT HOLDER "AS IS" AND ARM     //
+    26                                               //EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING     //
+    27                                               //WITHOUT LIMITATION WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR //
+    28                                               //PURPOSE, WITH RESPECT TO THIS SOFTWARE EXAMPLE. IN NO EVENT SHALL ARM BE LIABLE/
+    29                                               //FOR ANY DIRECT, INDIRECT, INCIDENTAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES OF ANY/
+    30                                               //KIND WHATSOEVER WITH RESPECT TO THE SOFTWARE EXAMPLE. ARM SHALL NOT BE LIABLE //
+    31                                               //FOR ANY CLAIMS, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, //
+    32                                               //TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE    //
+    33                                               //EXAMPLE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE EXAMPLE. FOR THE AVOIDANCE/
+    34                                               // OF DOUBT, NO PATENT LICENSES ARE BEING LICENSED UNDER THIS LICENSE AGREEMENT.//
+    35                                               //////////////////////////////////////////////////////////////////////////////////
+    36                                               
+    37                                               
+    38                                               module UART_TX(
+    39                                                 input wire clk,
+    40                                                 input wire resetn,
+    41                                                 input wire tx_start,        
+    42                                                 input wire b_tick,          //baud rate tick
+    43                                                 input wire [8:0] d_in,      //input data
+    44                                                 output reg tx_done,         //transfer finished
+    45                                                 output wire tx              //output data to RS-232
+    46                                                 );
+    47                                                 
+    48                                                 
+    49                                               //STATE DEFINES  
+    50                                                 localparam [1:0] idle_st = 2'b00;
+    51                                                 localparam [1:0] start_st = 2'b01;
+    52                                                 localparam [1:0] data_st = 2'b11;
+    53                                                 localparam [1:0] stop_st = 2'b10;
+    54                                                 
+    55                                               //Internal Signals  
+    56                                                 reg [1:0] current_state;
+    57                                                 reg [1:0] next_state;
+    58                                                 reg [3:0] b_reg;          //baud tick counter
+    59                                                 reg [3:0] b_next;
+    60                                                 reg [3:0] count_reg;      //data bit counter
+    61                                                 reg [3:0] count_next;
+    62                                                 reg [8:0] data_reg;       //data register
+    63                                                 reg [8:0] data_next;
+    64                                                 reg tx_reg;               //output data reg
+    65                                                 reg tx_next;
+    66                                                 
+    67                                               //State Machine  
+    68              1                     287125       always @(posedge clk, negedge resetn)
+    69                                                 begin
+    70                                                   if(!resetn)
+    71                                                     begin
+    72              1                          2             current_state <= idle_st;
+    73              1                          2             b_reg <= 0;
+    74              1                          2             count_reg <= 0;
+    75              1                          2             data_reg <= 0;
+    76              1                          2             tx_reg <= 1'b1;
+    77                                                     end
+    78                                                   else
+    79                                                     begin
+    80              1                     287123             current_state <= next_state;
+    81              1                     287123             b_reg <= b_next;
+    82              1                     287123             count_reg <= count_next;
+    83              1                     287123             data_reg <= data_next;
+    84              1                     287123             tx_reg <= tx_next;
+    85                                                      end
+    86                                                 end
+    87                                               
+    88                                               
+    89                                               //Next State Logic  
+    90              1                     287125       always @*
+    91                                                 begin
+    92              1                     287125         next_state = current_state;
+    93              1                     287125         tx_done = 1'b0;
+    94              1                     287125         b_next = b_reg;
+    95              1                     287125         count_next = count_reg;
+    96              1                     287125         data_next = data_reg;
+    97              1                     287125         tx_next = tx_reg;
+    98                                                   
+    99                                                   case(current_state)
+    100                                                    idle_st:
+    101                                                    begin
+    102             1                        802             tx_next = 1'b1;
+    103                                                      if(tx_start)
+    104                                                      begin
+    105             1                        800               next_state = start_st;
+    106             1                        800               b_next = 0;
+    107             1                        800               data_next = d_in;
+    108                                                      end
+    109                                                    end
+    110                                                    
+    111                                                    start_st: //send start bit
+    112                                                    begin
+    113             1                      26400             tx_next = 1'b0;
+    114                                                      if(b_tick)
+    115                                                        if(b_reg==15)
+    116                                                          begin
+    117             1                        800                   next_state = data_st;
+    118             1                        800                   b_next = 0;
+    119             1                        800                   count_next = 0;
+    120                                                          end
+    121                                                        else
+    122             1                      12000                 b_next = b_reg + 1;
+    123                                                    end
+    124                                                    
+    125                                                    data_st: //send data serially
+    126                                                    begin
+    127             1                     233912             tx_next = data_reg[0];
+    128                                                      
+    129                                                      if(b_tick)
+    130                                                        if(b_reg == 15)
+    131                                                          begin
+    132             1                       7200                   b_next = 0;
+    133             1                       7200                   data_next = data_reg >> 1;
+    134                                                            if(count_reg == 8)    //9 data bits
+    135             1                        800                     next_state = stop_st;
+    136                                                            else
+    137             1                       6400                     count_next = count_reg + 1;
+    138                                                          end
+    139                                                        else
+    140             1                     108000                 b_next = b_reg + 1;
+    141                                                    end
+    142                                                    
+    143                                                    stop_st: //send stop bit
+    144                                                    begin
+    145             1                      26010             tx_next = 1'b1;
+    146                                                      if(b_tick)
+    147                                                        if(b_reg == 15)   //one stop bit
+    148                                                          begin
+    149             1                        800                   next_state = idle_st;
+    150             1                        800                   tx_done = 1'b1;
+    151                                                          end
+    152                                                        else
+    153             1                      12000                 b_next = b_reg + 1;
+    154                                                    end
+    155                                                  endcase
+    156                                                end
+    157                                                
+    158                                                assign tx = tx_reg;
+    159                                                
+    160                                              endmodule
+    161                                              
+    162                                              
+    163                                              
+    164                                              ////this is just to confirm that tx works for sanity
+    165                                              
+    166                                              module uart_tx_mini_test();
+    167                                              
+    168                                              reg clk = 0;
+    169                                              reg b_tick = 0;
+    170                                              reg tx_start;
+    171                                              reg resetn;
+    172                                              reg poo = 0;
+    173                                              
+    174                                              wire tx_done;
+    175                                              wire tx;
+    176                                              
+    177                                                  
+    178                                                  always #10 clk = ~clk; 
+    179                                                  always #20 b_tick = ~b_tick;
+    180                                                  always #320 poo = ~poo;
+    181                                              
+    182                                              UART_TX uUART_TX(
+    183                                              .clk(clk),
+    184                                              .b_tick(b_tick),
+    185                                              .tx_start(tx_start),
+    186                                              .resetn(resetn),
+    187                                              .d_in(9'b011101111),
+    188                                              .tx_done(tx_done),
+    189                                              .tx(tx)
+    190                                              );
+    191                                              
+    192                                                initial begin
+    193                                              
+    194                                                      clk <= 0;
+    195                                                      resetn <= 0;
+    196                                                      tx_start <= 0;
+    197                                                      #40 resetn <= 1;
+    198                                                      @(posedge clk) tx_start <= 1;
+    199                                                      #10000;
+    200                                                       $stop;
+    201                                                end
+    202                                              
+    203                                              endmodule
+
+Branch Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Branches                        23        23         0    100.00
+
+================================Branch Details================================
+
+Branch Coverage for file rtl/ahb_uart/uart_tx.v --
+
+------------------------------------IF Branch------------------------------------
+    70                                    287125     Count coming in to IF
+    70              1                          2         if(!resetn)
+    78              1                     287123         else
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------CASE Branch------------------------------------
+    99                                    287125     Count coming in to CASE
+    100             1                        802           idle_st:
+    111             1                      26400           start_st: //send start bit
+    125             1                     233912           data_st: //send data serially
+    143             1                      26010           stop_st: //send stop bit
+                                               1     All False Count
+Branch totals: 5 hits of 5 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    103                                      802     Count coming in to IF
+    103             1                        800             if(tx_start)
+                                               2     All False Count
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    114                                    26400     Count coming in to IF
+    114             1                      12800             if(b_tick)
+                                           13600     All False Count
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    115                                    12800     Count coming in to IF
+    115             1                        800               if(b_reg==15)
+    121             1                      12000               else
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    129                                   233912     Count coming in to IF
+    129             1                     115200             if(b_tick)
+                                          118712     All False Count
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    130                                   115200     Count coming in to IF
+    130             1                       7200               if(b_reg == 15)
+    139             1                     108000               else
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    134                                     7200     Count coming in to IF
+    134             1                        800                   if(count_reg == 8)    //9 data bits
+    136             1                       6400                   else
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    146                                    26010     Count coming in to IF
+    146             1                      12800             if(b_tick)
+                                           13210     All False Count
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    147                                    12800     Count coming in to IF
+    147             1                        800               if(b_reg == 15)   //one stop bit
+    152             1                      12000               else
+Branch totals: 2 hits of 2 branches = 100.00%
+
+
+Condition Coverage:
+    Enabled Coverage            Active   Covered    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    FEC Condition Terms              4         4         0    100.00
+
+================================Condition Details================================
+
+Condition Coverage for file rtl/ahb_uart/uart_tx.v --
+
+----------------Focused Condition View-------------------
+Line       115 Item    1  (b_reg == 15)
+Condition totals: 1 of 1 input term covered = 100.00%
+
+----------------Focused Condition View-------------------
+Line       130 Item    1  (b_reg == 15)
+Condition totals: 1 of 1 input term covered = 100.00%
+
+----------------Focused Condition View-------------------
+Line       134 Item    1  (count_reg == 8)
+Condition totals: 1 of 1 input term covered = 100.00%
+
+----------------Focused Condition View-------------------
+Line       147 Item    1  (b_reg == 15)
+Condition totals: 1 of 1 input term covered = 100.00%
+
+
+FSM Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    FSMs                                                       83.33
+        States                       4         4         0    100.00
+        Transitions                  6         4         2     66.66
+
+================================FSM Details================================
+
+FSM Coverage for file rtl/ahb_uart/uart_tx.v --
+
+FSM_ID: current_state
+    Current State Object : current_state
+    ----------------------
+    State Value MapInfo :
+    ---------------------
+Line          State Name               Value
+----          ----------               -----
+ 100             idle_st                   0
+ 111            start_st                   1
+ 125             data_st                   3
+ 143             stop_st                   2
+    Covered States :
+    ----------------
+                   State           Hit_count
+                   -----           ---------
+                 idle_st                 803
+                start_st               26400
+                 data_st              233912
+                 stop_st               26010
+    Covered Transitions :
+    ---------------------
+Line            Trans_ID           Hit_count          Transition          
+----            --------           ---------          ----------          
+ 105                   0                 800          idle_st -> start_st 
+ 117                   1                 800          start_st -> data_st 
+ 135                   3                 800          data_st -> stop_st  
+ 149                   5                 800          stop_st -> idle_st  
+    Uncovered Transitions :
+    -----------------------
+Line            Trans_ID          Transition          
+----            --------          ----------          
+  72                   2          start_st -> idle_st 
+  72                   4          data_st -> idle_st  
+
+
+    Summary                     Active      Hits    Misses % Covered
+    -------                     ------      ----    ------ ---------
+        States                       4         4         0    100.00
+        Transitions                  6         4         2     66.66
+Toggle Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Toggle Bins                    110       109         1     99.09
+
+================================Toggle Details================================
+
+Toggle Coverage for File rtl/ahb_uart/uart_tx.v --
+
+       Line                                   Node      1H->0L      0L->1H  "Coverage"
+--------------------------------------------------------------------------------------
+         40                                 resetn           0           1       50.00 
+
+Total Node Count     =         55 
+Toggled Node Count   =         54 
+Untoggled Node Count =          1 
+
+Toggle Coverage      =      99.09% (109 of 110 bins)
+
+=================================================================================
+=== File: tbench/ahb_uart/uart_tx/uart_tx_driver.sv
+=================================================================================
+Statement Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Stmts                           13        13         0    100.00
+
+================================Statement Details================================
+
+Statement Coverage for file tbench/ahb_uart/uart_tx/uart_tx_driver.sv --
+
+    1                                                import uart_tx_pkg::uart_tx_transaction;
+    2                                                
+    3                                                class uart_tx_driver;
+    4                                                    mailbox drv_mbx;
+    5                                                    mailbox tr_mbx;    
+    6                                                    event drv_done;
+    7                                                    virtual uart_tx_if vif;
+    8                                                
+    9                                                    task run();
+    10              1                          1             $display ("T=%0t [Driver] Driver is starting...", $time);        
+    11              1                          1             forever begin
+    12                                                           uart_tx_transaction t;
+    13              1                        801                 $display ("T=%0t [Driver] Driver waiting for item...", $time);
+    14              1                        801                 drv_mbx.get(t); //blocks until next item is present
+    15              1                        800                 tr_mbx.put(t);
+    16              1                        800                 t.print("Driver");
+    17              1                        800                 vif.d_in <= t.d_in;
+    18                                                           
+    19              1                        800                 vif.tx_start <= 1;
+    20              1                        800                 @(posedge vif.clk);
+    21              1                   22950400                 while(!vif.tx_done) @(posedge vif.clk); //wait for transmitter to complete
+    21              2                   22949600     
+    22              1                        800                 ->drv_done; //now we know the transmitter is done, we can raise the drv_done event to signal for a new transaction to send over
+    23              1                        800                 vif.tx_start <= 0;
+    24                                                       end
+    25                                                   endtask
+    26                                               endclass
+
+
+=================================================================================
+=== File: tbench/ahb_uart/uart_tx/uart_tx_environment.sv
+=================================================================================
+Statement Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Stmts                           23        23         0    100.00
+
+================================Statement Details================================
+
+Statement Coverage for file tbench/ahb_uart/uart_tx/uart_tx_environment.sv --
+
+    1                                                import uart_tx_pkg::*; //have to import * - importing each one manually gives errors about not being able to find it
+    2                                                
+    3                                                class uart_tx_environment;
+    4                                                    uart_tx_scoreboard scb;
+    5                                                    uart_tx_monitor mon;
+    6                                                    uart_tx_driver drv;
+    7                                                    uart_tx_generator gen;
+    8                                                
+    9                                                    mailbox scb_mbx;
+    10                                                   mailbox drv_mbx;
+    11                                                   mailbox tr_mbx;
+    12                                               
+    13                                                   virtual uart_tx_if vif;
+    14                                                   event drv_done;
+    15                                               
+    16                                                   function new();
+    17              1                          1             mon = new;
+    18              1                          1             drv = new;
+    19              1                          1             scb = new;
+    20              1                          1             gen = new;
+    21              1                          1             scb_mbx = new();
+    22              1                          1             drv_mbx = new();
+    23              1                          1             tr_mbx = new();
+    24                                               
+    25              1                          1             mon.scb_mbx = scb_mbx;
+    26              1                          1             scb.scb_mbx = scb_mbx;
+    27                                               
+    28              1                          1             drv.drv_mbx = drv_mbx;
+    29              1                          1             gen.drv_mbx = drv_mbx;
+    30                                               
+    31              1                          1             drv.tr_mbx = tr_mbx;
+    32              1                          1             mon.tr_mbx = tr_mbx;
+    33                                               
+    34              1                          1             drv.drv_done = drv_done;
+    35              1                          1             gen.drv_done = drv_done;
+    36                                                   endfunction
+    37                                               
+    38                                                   virtual task run();
+    39              1                          1             drv.vif = vif;
+    40              1                          1             mon.vif = vif;
+    41                                                       
+    42                                                       fork
+    43              1                          1                 drv.run();
+    44              1                          1                 mon.run();
+    45              1                          1                 scb.run();
+    46              1                          1                 gen.run(); 
+    47                                                       join_any
+    48                                                       
+    49                                                       
+    50              1                          1             #200ns;
+    51              1                          1             $display ("T=%0t Num tests passed: %0d | Num tests failed: %0d", $time, scb.num_passed, scb.num_failed);
+    52                                               
+    53                                                   endtask
+    54                                               endclass
+
+
+=================================================================================
+=== File: tbench/ahb_uart/uart_tx/uart_tx_generator.sv
+=================================================================================
+Statement Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Stmts                            8         8         0    100.00
+
+================================Statement Details================================
+
+Statement Coverage for file tbench/ahb_uart/uart_tx/uart_tx_generator.sv --
+
+    1                                                import uart_tx_pkg::uart_tx_transaction;
+    2                                                
+    3                                                class uart_tx_generator
+    4                                                #(parameter NUM_TESTS=800) 
+    5                                                ;
+    6                                                    mailbox drv_mbx;
+    7                                                    event drv_done;
+    8                                                     
+    9                                                    task run();
+    10              1                          1             for (int i = 0; i < NUM_TESTS; i++) begin
+    10              2                        800     
+    11              1                        800                 uart_tx_transaction tr = new;
+    12              1                        800                 void'(tr.randomize());
+    13              1                        800                 $display ("T=%0t [Generator] Created transaction at index %0d", $time, i);
+    14              1                        800                 drv_mbx.put(tr);
+    15              1                        800                 @(drv_done);
+    16                                                       end
+    17              1                          1             $display ("T=%0t [Generator] Done generation of %0d transactions", $time, NUM_TESTS);
+    18                                                   endtask
+    19                                               endclass
+
+
+=================================================================================
+=== File: tbench/ahb_uart/uart_tx/uart_tx_interface.sv
+=================================================================================
+Toggle Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Toggle Bins                     30        29         1     96.66
+
+================================Toggle Details================================
+
+Toggle Coverage for File tbench/ahb_uart/uart_tx/uart_tx_interface.sv --
+
+       Line                                   Node      1H->0L      0L->1H  "Coverage"
+--------------------------------------------------------------------------------------
+          2                                 resetn           0           1       50.00 
+
+Total Node Count     =         15 
+Toggled Node Count   =         14 
+Untoggled Node Count =          1 
+
+Toggle Coverage      =      96.66% (29 of 30 bins)
+
+=================================================================================
+=== File: tbench/ahb_uart/uart_tx/uart_tx_monitor.sv
+=================================================================================
+Statement Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Stmts                           17        16         1     94.11
+
+================================Statement Details================================
+
+Statement Coverage for file tbench/ahb_uart/uart_tx/uart_tx_monitor.sv --
+
+    1                                                import uart_tx_pkg::uart_tx_transaction;
+    2                                                
+    3                                                class uart_tx_monitor
+    4                                                #(parameter TX_OUT_SIZE=11) //number of bits in tx output including start and stop and parity
+    5                                                ;
+    6                                                    virtual uart_tx_if vif;
+    7                                                    mailbox scb_mbx;
+    8                                                    mailbox tr_mbx;
+    9                                                
+    10                                                   task run();
+    11              1                          1             $display ("T=%0t [Monitor] Monitor is starting...", $time);
+    12              1                          1             forever begin
+    13              1                        810                 @ (posedge vif.clk);
+    14                                                           if (vif.tx_start) begin
+    15                                                               uart_tx_transaction t; //needs to be declared here or weird error
+    16                                                               logic [TX_OUT_SIZE-3:0] d_out; //tx output with parity minus start and stop bits
+    17                                                               logic [TX_OUT_SIZE-1:0] tx_out; //includes the start and stop bits - so 11 bits
+    18              1                        800                     tr_mbx.get(t); //get the corresponding input data (d_in)
+    19              1                        800                     $display ("T=%0t [Monitor] Monitor processing item...", $time);
+    20              1                        800                     for (int i = 0; i < TX_OUT_SIZE; i++) begin
+    20              2                       8800     
+    21              1                       8800                         for (int j = 0; j < 16; j++) @ (posedge vif.baud_tick);
+    21              2                     140800     
+    21              3                     140800     
+    22              1                       8800                         tx_out[i] = vif.tx; //read in the middle of the 16 baud tick oversampled cycle
+    23              1                       8800                         @ (posedge vif.clk);
+    24                                                               end //sample the output bits
+    25              1                        800                     while (!vif.tx_done) @ (posedge vif.clk); //wait until done signal
+    25              2                    ***0***     
+    26              1                        800                     d_out = tx_out[TX_OUT_SIZE-2:1]; //remove the start and stop bits
+    27              1                        800                     t.d_out = d_out;
+    28              1                        800                     scb_mbx.put(t);
+    29                                                           end
+    30                                                       end
+    31                                                       
+    32                                                   endtask
+    33                                               endclass
+
+Branch Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Branches                         2         2         0    100.00
+
+================================Branch Details================================
+
+Branch Coverage for file tbench/ahb_uart/uart_tx/uart_tx_monitor.sv --
+
+------------------------------------IF Branch------------------------------------
+    14                                       809     Count coming in to IF
+    14              1                        800                 if (vif.tx_start) begin
+                                               9     All False Count
+Branch totals: 2 hits of 2 branches = 100.00%
+
+
+
+=================================================================================
+=== File: tbench/ahb_uart/uart_tx/uart_tx_scoreboard.sv
+=================================================================================
+Statement Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Stmts                           11         9         2     81.81
+
+================================Statement Details================================
+
+Statement Coverage for file tbench/ahb_uart/uart_tx/uart_tx_scoreboard.sv --
+
+    1                                                import uart_tx_pkg::uart_tx_transaction;
+    2                                                
+    3                                                
+    4                                                class uart_tx_scoreboard;
+    5                                                    mailbox scb_mbx;
+    6               1                          1         int num_passed = 0;
+    7               1                          1         int num_failed = 0;
+    8                                                
+    9                                                     covergroup cg with function sample(uart_tx_transaction t);
+    10                                                       
+    11                                                       even_odd_d_in: coverpoint ^t.d_in {
+    12                                                           bins even = {0};
+    13                                                           bins odd = {1};
+    14                                                       }
+    15                                               
+    16                                                       range_din_vals: coverpoint t.d_in {        
+    17                                                           bins lo = {[0:127]};
+    18                                                           bins med_lo = {[128:255]};
+    19                                                           bins med_hi = {[256:383]};
+    20                                                           bins hi = {[384:511]};
+    21                                                       }
+    22                                               
+    23                                               
+    24                                                       all: cross range_din_vals, even_odd_d_in;
+    25                                               
+    26                                                   endgroup
+    27                                               
+    28                                                   function new();
+    29              1                          1             cg = new();
+    30                                                   endfunction
+    31                                               
+    32                                               
+    33                                                   task run();
+    34              1                          1             forever begin
+    35                                                           uart_tx_transaction t;
+    36              1                        801                 scb_mbx.get(t);
+    37              1                        800                 t.print("Scoreboard");
+    38              1                        800                 cg.sample(t);
+    39                                                           if (t.d_in == t.d_out) begin
+    40              1                        800                     $display("PASS! Input vector %d is equal to output sequence of bits %d", t.d_in, t.d_out);
+    41              1                        800                     num_passed = num_passed + 1;
+    42                                                           end else begin
+    43              1                    ***0***                     $display("FAIL! Input vector %d is NOT equal to output sequence of bits %d", t.d_in, t.d_out);
+    44              1                    ***0***                     num_failed = num_failed + 1;
+    45                                                           end
+    46                                                       end
+    47                                                   endtask
+    48                                               endclass
+
+Branch Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Branches                         2         1         1     50.00
+
+================================Branch Details================================
+
+Branch Coverage for file tbench/ahb_uart/uart_tx/uart_tx_scoreboard.sv --
+
+------------------------------------IF Branch------------------------------------
+    39                                       800     Count coming in to IF
+    39              1                        800                 if (t.d_in == t.d_out) begin
+    42              1                    ***0***                 end else begin
+Branch totals: 1 hit of 2 branches = 50.00%
+
+
+Condition Coverage:
+    Enabled Coverage            Active   Covered    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    FEC Condition Terms              1         0         1      0.00
+
+================================Condition Details================================
+
+Condition Coverage for file tbench/ahb_uart/uart_tx/uart_tx_scoreboard.sv --
+
+----------------Focused Condition View-------------------
+Line       39 Item    1  (t.d_in == t.d_out)
+Condition totals: 0 of 1 input term covered = 0.00%
+
+           Input Term   Covered  Reason for no coverage   Hint
+          -----------  --------  -----------------------  --------------
+  (t.d_in == t.d_out)         N  '_0' not hit             Hit '_0'
+
+     Rows:       Hits  FEC Target             Non-masking condition(s)      
+ ---------  ---------  --------------------   -------------------------     
+  Row   1:    ***0***  (t.d_in == t.d_out)_0  -                             
+  Row   2:          1  (t.d_in == t.d_out)_1  -                             
+
+
+
+=================================================================================
+=== File: tbench/ahb_uart/uart_tx/uart_tx_test.sv
+=================================================================================
+Statement Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Stmts                            2         2         0    100.00
+
+================================Statement Details================================
+
+Statement Coverage for file tbench/ahb_uart/uart_tx/uart_tx_test.sv --
+
+    1                                                import uart_tx_pkg::uart_tx_environment;
+    2                                                
+    3                                                class uart_tx_test;
+    4                                                    uart_tx_environment env;
+    5                                                
+    6                                                    function new();
+    7               1                          1             env = new;
+    8                                                     endfunction
+    9                                                
+    10                                                   task run();
+    11              1                          1             env.run();
+    12                                                   endtask     
+    13                                               endclass
+
+
+=================================================================================
+=== File: tbench/ahb_uart/uart_tx/uart_tx_testbench.sv
+=================================================================================
+Statement Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Stmts                           12        12         0    100.00
+
+================================Statement Details================================
+
+Statement Coverage for file tbench/ahb_uart/uart_tx/uart_tx_testbench.sv --
+
+    1                                                import uart_tx_pkg::uart_tx_test;
+    2                                                
+    3                                                module uart_tx_testbench;
+    4                                                    reg clk;
+    5                                                    reg baud_tick;
+    6                                                
+    7                                                    uart_tx_if _if(clk, baud_tick);
+    8                                                
+    9               1                   45900823         always #10ns clk = ~clk; //50 mhz clock
+    9               2                   45900822     
+    10                                               
+    11                                                   BAUDGEN 
+    12                                                   #(.CLOCK_HZ(50_000_000))
+    13                                                   uBAUDGEN(
+    14                                                       .clk(clk),
+    15                                                       .resetn(_if.resetn),
+    16                                                       .baud_rate(18'd19200),
+    17                                                       .baudtick(baud_tick)
+    18                                                   );
+    19                                               
+    20                                                   UART_TX DUT (
+    21                                                       .clk(clk),
+    22                                                       .resetn(_if.resetn),
+    23                                                       .tx_start(_if.tx_start),
+    24                                                       .b_tick(baud_tick),
+    25                                                       .d_in(_if.d_in),
+    26                                                       .tx_done(_if.tx_done),
+    27                                                       .tx(_if.tx)
+    28                                                   );
+    29                                               
+    30                                                   initial begin
+    31              1                          1             automatic uart_tx_test t = new;        
+    32                                               
+    33              1                          1             $display ("T=%0t [Testbench] Testbench starting...", $time);
+    34                                               
+    35              1                          1             clk <= 0;
+    36              1                          1             _if.resetn <= 0;
+    37              1                          1             _if.tx_start <= 0;
+    38              1                          1             #40 _if.resetn <= 1;
+    38              2                          1     
+    39                                               
+    40                                               
+    41              1                          1             t.env.vif = _if;
+    42                                                       fork
+    43              1                          1                 t.run();
+    44                                                       join
+    45                                               
+    46                                                       // $display ("T=%0t [Testbench] Testbench finishing...", $time);
+    47                                                       // $finish; //this quits questasim...
+    48              1                          1             $stop;
+    49                                                   end
+    50                                               endmodule
+
+Toggle Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Toggle Bins                      4         4         0    100.00
+
+================================Toggle Details================================
+
+Toggle Coverage for File tbench/ahb_uart/uart_tx/uart_tx_testbench.sv --
+
+       Line                                   Node      1H->0L      0L->1H  "Coverage"
+--------------------------------------------------------------------------------------
+
+Total Node Count     =          2 
+Toggled Node Count   =          2 
+Untoggled Node Count =          0 
+
+Toggle Coverage      =     100.00% (4 of 4 bins)
+
+=================================================================================
+=== File: tbench/ahb_uart/uart_tx/uart_tx_transaction.sv
+=================================================================================
+Statement Coverage:
+    Enabled Coverage            Active      Hits    Misses % Covered
+    ----------------            ------      ----    ------ ---------
+    Stmts                            1         1         0    100.00
+
+================================Statement Details================================
+
+Statement Coverage for file tbench/ahb_uart/uart_tx/uart_tx_transaction.sv --
+
+    1                                                class uart_tx_transaction;
+    2                                                
+    3                                                    rand bit [8:0] d_in; //this represents the input vector
+    4                                                    bit [8:0] d_out; //this represents each serial bit of the output. each element is the subsequent bit output by the tx.
+    5                                                
+    6                                                    //not using because d_in is set by calling randomize() on instance of obj
+    7                                                    // function new(bit [8:0] d_in, d_out); 
+    8                                                    //     d_in=d_in;
+    9                                                    //     d_out=d_out;
+    10                                                   // endfunction
+    11                                                
+    12                                                   function void print(string tag="");
+    13              1                       1600             $display ("T=%0t [Transaction] (Tag: %s) d_in=0x%0h d_out=0x%0h", $time, tag, d_in, d_out);
+    14                                                   endfunction
+    15                                               endclass
+
+
+COVERGROUP COVERAGE:
+-----------------------------------------------------------------------------------------------
+Covergroup                                             Metric       Goal    Status               
+                                                                                              
+-----------------------------------------------------------------------------------------------
+ TYPE /uart_tx_pkg/uart_tx_scoreboard/cg              100.00%        100    Covered              
+    covered/total bins:                                    14         14                      
+    missing/total bins:                                     0         14                      
+    % Hit:                                            100.00%        100                      
+    Coverpoint cg::even_odd_d_in                      100.00%        100    Covered              
+        covered/total bins:                                 2          2                      
+        missing/total bins:                                 0          2                      
+        % Hit:                                        100.00%        100                      
+        bin even                                          428          1    Covered              
+        bin odd                                           372          1    Covered              
+    Coverpoint cg::range_din_vals                     100.00%        100    Covered              
+        covered/total bins:                                 4          4                      
+        missing/total bins:                                 0          4                      
+        % Hit:                                        100.00%        100                      
+        bin lo                                            215          1    Covered              
+        bin med_lo                                        195          1    Covered              
+        bin med_hi                                        206          1    Covered              
+        bin hi                                            184          1    Covered              
+    Cross cg::all                                     100.00%        100    Covered              
+        covered/total bins:                                 8          8                      
+        missing/total bins:                                 0          8                      
+        % Hit:                                        100.00%        100                      
+        bin <lo,even>                                     117          1    Covered              
+        bin <med_lo,even>                                  95          1    Covered              
+        bin <med_hi,even>                                 109          1    Covered              
+        bin <hi,even>                                     107          1    Covered              
+        bin <lo,odd>                                       98          1    Covered              
+        bin <med_lo,odd>                                  100          1    Covered              
+        bin <med_hi,odd>                                   97          1    Covered              
+        bin <hi,odd>                                       77          1    Covered              
+
+TOTAL COVERGROUP COVERAGE: 100.00%  COVERGROUP TYPES: 1
+
+Total Coverage By File (code coverage only, filtered view): 86.23%
+
+End time: 21:14:24 on Dec 17,2020, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0

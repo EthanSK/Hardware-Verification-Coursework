@@ -34,6 +34,9 @@ We tested the entire AHBUART as a whole. We fed input through HWDATA, then once 
 Note that we test to see if overall transmission worked at the RsTx terminal as well as at HRDATA
 The testbench can be found in `/UART_files/tbench/ahb_uart_tb`
 
+Testbench log: 
+Coverage: `coverage/ahb_uart_tb.txt`
+
 TODO: logfiles & coverage
 
 ## AHBLITE SYS Assembly test
@@ -42,9 +45,8 @@ We tested the functionality of the AHBUART as a peripheral of the whole AHBLITE 
 
 The testbench is in `UART_files/tbench/ahblite_sys_tb`, and the assembly being used is in `UART_files/src/cm0dsasm_UART.s`
 
-Testbench log is in `logs/ahblite_sys_tb.txt`
-
-TODO: logfiles & coverage
+Testbench log: `testbench_logs/ahblite_sys_tb.txt`
+Coverage: `coverage/ahblite_sys_tb.txt`
 
 ## Coverage
 We wrote covergroups for each testbench as outlined in the verification plan. The covergroups can be found in the scoreboard of each testbench mentioned above.

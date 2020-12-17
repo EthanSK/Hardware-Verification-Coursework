@@ -22,7 +22,6 @@ wlf*
 *.wlf
 *.vstf
 *.ucdb
-cov*/
 transcript*
 sc_dpiheader.h
 vsim.dbg
@@ -35,3 +34,5 @@ vsim.dbg
 
 #for submission of cw
 !ucdb_files/*.ucdb
+jgproject
+covhtmlreport

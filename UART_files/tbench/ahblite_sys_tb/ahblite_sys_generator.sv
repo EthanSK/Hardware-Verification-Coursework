@@ -1,7 +1,7 @@
 import ahblite_sys_pkg::ahblite_sys_transaction;
 
 class ahblite_sys_generator
-#(parameter NUM_TESTS=5) 
+#(parameter NUM_TESTS=50) 
 ;
     mailbox drv_mbx;
     mailbox num_outstanding_tests;

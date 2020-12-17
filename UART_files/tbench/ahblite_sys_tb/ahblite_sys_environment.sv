@@ -69,7 +69,5 @@ class ahblite_sys_environment;
 
         $display ("T=%0t Tx Num tests passed: %0d | Num tests failed: %0d", $time, scb.num_passed, scb.num_failed);
 
-        $display ("T=%0t Rx Num tests passed: %0d | Num tests failed: %0d", $time, scb.num_passed, scb.num_failed);        
-
     endtask
 endclass

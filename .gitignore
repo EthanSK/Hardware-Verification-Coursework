@@ -32,3 +32,6 @@ vsim.dbg
 
 
 .nfs00000000008247380000032b
+
+#for submission of cw
+!ucdb_files/*.ucdb

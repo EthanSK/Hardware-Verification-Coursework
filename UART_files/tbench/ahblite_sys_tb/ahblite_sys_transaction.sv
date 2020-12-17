@@ -7,6 +7,6 @@ class ahblite_sys_transaction;
     bit[31:0] test_id;
     
     function void print(string tag="");
-        $display ("T=%0t [Transaction] (Tag: %s) d_in=0x%0h d_out=0x%0h", $time, tag, d_in, d_out);
+        $display ("T=%0t [Transaction] (Tag: %s) test_id=%0d d_in=0x%0h d_out=0x%0h", $time, tag, test_id, d_in, d_out);
     endfunction
 endclass

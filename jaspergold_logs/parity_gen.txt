@@ -1,0 +1,71 @@
+INFO: successfully checked out licenses "jasper_pint" and "jasper_fao".
+INFO: reading configuration file "/home/es5017/.config/jasper/jaspergold.conf".
+% clear -all
+% analyze -clear
+% analyze -v2k rtl/ahb_uart/parity_gen.v
+[WARN (VERI-9025)] rtl/ahb_uart/parity_gen.v(33): Empty Port in Module Declaration
+% elaborate -top PARITY_GEN
+PARITY_GEN
+[<embedded>] % 
+[<embedded>] % # Setup global clocks and resets
+[<embedded>] % clock -none
+INFO (ICK008): Enabling clock-free environment.
+[<embedded>] % reset -none
+INFO (IPM031): Clearing proof results of all properties.
+[<embedded>] % 
+[<embedded>] % # Setup task
+[<embedded>] % task -set <embedded>
+<embedded>
+[<embedded>] % set_proofgrid_max_jobs 4
+[<embedded>] % set_proofgrid_max_local_jobs 4
+[<embedded>] % 
+[<embedded>] % 
+[<embedded>] % assert -name data_is_correct {
+    data_in[7:0] == data_out[7:0]
+}
+data_is_correct
+[<embedded>] % prove -bg -all
+background 0
+INFO (IPF036): Starting proof on task: "<embedded>", 1 properties to prove with 0 already proven/unreachable
+INFO (IRS029): Starting reset analysis: phase 1 of 4.
+INFO (IRS030): Running reset analysis: phase 2 of 4.
+INFO (IRS031): Running reset analysis: phase 3 of 4.
+INFO (IRS020): Starting the reset analysis simulation with a limit of 100 iterations (phase 4 of 4).
+INFO (IRS024): Reset iterations 0 to 3 analyzed.
+INFO (IRS018): Reset analysis simulation executed for 2 iterations. Assigned values for 0 of 0 design flops, 0 of 0 design latches, 0 of 0 internal elements.
+INFO (IRS039): Reset analysis complete.
+INFO (IPF031): Settings used for proof thread 0:
+    orchestration                 = on (auto)
+    time_limit                    = 86400s
+    per_property_time_limit       = 1s * 10 ^ scan
+    engine_mode                   = auto
+    proofgrid_per_engine_max_jobs = 1
+    proofgrid_max_jobs            = 4
+    max engine jobs               = auto (max 4)
+    proofgrid_mode                = local
+    proofgrid_restarts            = 10
+INFO (IPF057): 0.0.PRE: The property "data_is_correct" was proven in 0.00 s.
+INFO (IPF059): Completed proof on task: "<embedded>"
+
+==============================================================
+SUMMARY
+==============================================================
+           Properties Considered              : 1
+                 assertions                   : 1
+                  - proven                    : 1 (100%)
+                  - bounded_proven (user)     : 0 (0%)
+                  - bounded_proven (auto)     : 0 (0%)
+                  - marked_proven             : 0 (0%)
+                  - cex                       : 0 (0%)
+                  - ar_cex                    : 0 (0%)
+                  - undetermined              : 0 (0%)
+                  - unknown                   : 0 (0%)
+                  - error                     : 0 (0%)
+                 covers                       : 0
+                  - unreachable               : 0
+                  - bounded_unreachable (user): 0
+                  - covered                   : 0
+                  - ar_covered                : 0
+                  - undetermined              : 0
+                  - unknown                   : 0
+                  - error                     : 0

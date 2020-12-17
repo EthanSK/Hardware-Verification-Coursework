@@ -21,8 +21,6 @@
 - Check that PARITYERR is asserted when the parity bit is incorrect for both even and odd parity, and with an occasional parity fault injection with a custom distribution.
 - For functional coverage, ensure even and odd parity is tested, as well as parity fault injection. Also make sure input data is tested with both odd and even values. Then test a cross combination of all of these.
 
-
-
 ## AHBUART
 - Test overall transmission and receiving through the UART. Check the bottom 8 bits of HWDATA equate to the first 8 bits sent at the transmitter end. Then feed that output back into the Rx receiver terminal simultaneously and ensure HRDATA matches the original HWDATA.
 - Push multiple data vectors through the UART at once to ensure the FIFO mechanism works as intended. When the HREADYOUT is low, stop sending data through until it becomes high again (at which point we know the FIFO has more space to hold more data).
@@ -35,3 +33,5 @@
 
 - Drive transactions through the RsRx terminal of an AHBLITE SYS that is running an assembler program that waits for the receive buffer to have content, and sends the value back through the UART.
 - Monitor the output of the RsTx terminal and check that it matches what was sent in.
+
+## Assertions

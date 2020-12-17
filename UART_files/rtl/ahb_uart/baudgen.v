@@ -39,7 +39,7 @@ module BAUDGEN
 (
   input wire clk,
   input wire resetn,
-  input reg [17:0] baud_rate,
+  input wire [17:0] baud_rate,
   output wire baudtick
 );
 

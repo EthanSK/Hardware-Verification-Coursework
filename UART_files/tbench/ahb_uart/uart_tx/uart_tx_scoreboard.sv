@@ -17,7 +17,7 @@ class uart_tx_scoreboard;
             bins lo = {[0:127]};
             bins med_lo = {[128:255]};
             bins med_hi = {[256:383]};
-            bins hi = {[384:512]};
+            bins hi = {[384:511]};
         }
 
 

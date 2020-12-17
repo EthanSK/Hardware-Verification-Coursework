@@ -1,4 +1,4 @@
-vlog -work work +acc=blnr +cover -noincr -timescale 1ns/1ps rtl/**/*.v
+vlog -work work +acc=blnr +cover -noincr -timescale 1ns/1ps rtl/**/*.v rtl/AHBLITE_SYS.v
 
 vlog -work work +acc=blnr +cover -noincr -timescale 1ns/1ps tbench/ahb_uart/uart_rx/uart_rx_pkg.sv tbench/ahb_uart/uart_tx/uart_tx_pkg.sv tbench/ahb_uart/uart_rx/*.sv tbench/ahb_uart/uart_tx/*.sv
 
@@ -8,4 +8,7 @@ vlog -work work +acc=blnr +cover -noincr -timescale 1ns/1ps tbench/ahb_uart/pari
 
 vlog -work work +acc=blnr +cover -noincr -timescale 1ns/1ps tbench/ahb_uart/parity_check/parity_check_pkg.sv tbench/ahb_uart/parity_check/*.sv 
 
+vlog -work work +acc=blnr +cover -noincr -timescale 1ns/1ps tbench/ahblite_sys_tb/ahblite_sys_pkg.sv tbench/ahblite_sys_tb/*.sv
+
+ 
  

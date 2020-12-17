@@ -55,8 +55,14 @@ module AHB2LED(
   begin
     if(!HRESETn)
       rLED <= 8'b0000_0000;
-    else if(rHSEL & rHWRITE & rHTRANS[1])
+    else if(rHSEL & rHWRITE & rHTRANS[1]) begin
       rLED <= HWDATA[7:0];
+	  $display(
+		"[LED] [T=%0d] writing LED value... LED=0x%2h",
+		$time,
+		HWDATA[7:0]
+	  );
+	end
   end
 
 //Transfer Response

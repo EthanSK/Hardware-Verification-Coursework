@@ -55,26 +55,6 @@ Reset_Handler   PROC
                 GLOBAL Reset_Handler
                 ENTRY
 
-;Write "TEST" to the UART
-
-
-				LDR 	R1, =0x51000000
-				MOVS	R0, #'T'
-				STR		R0, [R1]
-
-				LDR 	R1, =0x51000000
-				MOVS	R0, #'E'
-				STR		R0, [R1]
-
-				LDR 	R1, =0x51000000
-				MOVS	R0, #'S'
-				STR		R0, [R1]
-				
-				LDR 	R1, =0x51000000
-				MOVS	R0, #'T'
-				STR		R0, [R1]
-
-
 
 ;wait until receive buffer is not empty
 

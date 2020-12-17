@@ -12,7 +12,7 @@ We wrote a verification plan outlining the steps we plan on testing and verifyin
 - Created a PARITY_GEN module in `UART_files/rtl/ahb_uart/parity_gen.v` that supports even and odd parity, as well is artificial fault injection.
 - Created a PARITY_CHECK module in `UART_files/rtl/ahb_uart/parity_check.v` that supports even and odd parity, as well as artificial fault injection.
 - Modified `uart_rx` and `uart_tx` to support 9-bit data transfer (Note that we kept it modular and decoupled from parity which is in a separate module).
-- Modified `AHBUART.v` to support even and odd parity, parity fault injection, and raising the PARITYERR signal on detection of a parity error. We also support input for a custom baud rate.
+- Modified `AHBUART.v` to support even and odd parity, parity fault injection, and raising the PARITYERR signal on detection of a parity error. We also support input for a custom baud rate by using the bottom bits of HADDR not equaling 0 and setting HWRITE and HSEL to 1.
 - The status register now includes a parity error counter.
 
 ## Unit Tests

@@ -28,7 +28,7 @@ class ahb_uart_rx_scoreboard;
             bins lo = {[0:63]};
             bins med_lo = {[64:127]};
             bins med_hi = {[128:191]};
-            bins hi = {[192:256]};
+            bins hi = {[192:255]};
         }
 
         all: cross range_HRDATA_vals, even_odd_parity, even_odd_d_in, parity_fault_injection;

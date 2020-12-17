@@ -119,14 +119,13 @@ wire            reset_n = RESET;
 
 // Clock divider, divide the frequency by two, hence less time constraint 
 reg clk_div;
+initial clk_div=0;
 always @(posedge CLK)
 begin
     clk_div=~clk_div;
 end
-BUFG BUFG_CLK (
-    .O(fclk),
-    .I(clk_div)
-);
+
+assign fclk = clk_div;
 
 // Reset synchronizer
 reg  [4:0]     reset_sync_reg;
@@ -233,6 +232,8 @@ CORTEXM0INTEGRATION u_CORTEXM0INTEGRATION (
 
 //Address Decoder 
 
+// always @(posedge HCLK) $display("T=%10d HADDR=0x%8h HTRANS=%2b HSEL_MEM=%1b HSEL_LED=%1b HSEL_UART=%1b HRESETn=%1b LED=%8b", $time, HADDR, HTRANS, HSEL_MEM, HSEL_LED, HSEL_UART, HRESETn, LED);
+
 AHBDCD uAHBDCD (
     .HADDR(HADDR[31:0]),
      
@@ -320,8 +321,26 @@ AHBUART uAHBUART(
 	.HREADYOUT(HREADYOUT_UART),
 	
 	.RsRx(RsRx),
-	.RsTx(RsTx)
-//	.uart_irq(UART_IRQ)
-    );
+	.RsTx(RsTx),
+    
+    .PARITYSEL(1'b1),
+    .parity_fault_injection(1'b0),    
+    .PARITYERR()
+);
+
+AHB2LED uAHB2LED(
+    .HSEL(HSEL_LED),
+    .HCLK(HCLK),
+    .HRESETn(HRESETn),
+    .HREADY(HREADY),
+    .HADDR(HADDR),
+    .HTRANS(HTRANS),
+    .HWRITE(HWRITE),
+    .HSIZE(HSIZE),
+    .HWDATA(HWDATA),
+    .HREADYOUT(HREADYOUT_LED),
+    .HRDATA(HRDATA_LED),
+    .LED(LED)
+);
     
 endmodule

@@ -31,5 +31,7 @@
 - For functional coverage, ensure even and odd parity is tested, as well as parity fault injection. Also make sure input data is tested with both odd and even values. Test the distribution of values used is balanced enough by using low, medium-low, mediums-high, and high bins. Then test a cross combination of all of these.
 
 
+## AHBUART LITE SYS
 
- 
+- Drive transactions through the RsRx terminal of an AHBLITE SYS that is running an assembler program that waits for the receive buffer to have content, and sends the value back through the UART.
+- Monitor the output of the RsTx terminal and check that it matches what was sent in.

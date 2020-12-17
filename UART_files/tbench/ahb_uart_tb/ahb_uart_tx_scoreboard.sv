@@ -29,7 +29,7 @@ class ahb_uart_tx_scoreboard;
             bins lo = {[0:63]};
             bins med_lo = {[64:127]};
             bins med_hi = {[128:191]};
-            bins hi = {[192:256]};
+            bins hi = {[192:255]};
         }
 
         all: cross range_HWDATA_vals, even_odd_d_in, parity_fault_injection, even_odd_parity;

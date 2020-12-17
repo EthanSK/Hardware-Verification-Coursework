@@ -61,7 +61,7 @@ AGAIN		   	LDR 	R1, =0x50000000				;Write to LED with value 0x55
 
 
 
-				LDR		R0, =0x2FFFFF				;Delay
+				LDR		R0, =0xF				;Delay
 Loop			SUBS	R0,R0,#1
 				BNE Loop
 
@@ -69,7 +69,7 @@ Loop			SUBS	R0,R0,#1
 				LDR		R0, =0xAA
 				STR		R0, [R1]
 
-				LDR		R0, =0x2FFFFF				;Delay
+				LDR		R0, =0xF				;Delay
 Loop1			SUBS	R0,R0,#1
 				BNE Loop1
 

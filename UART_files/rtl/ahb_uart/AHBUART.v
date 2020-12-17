@@ -59,9 +59,11 @@ module AHBUART(
 
   input wire PARITYSEL, //1 for odd parity 0 for even (implemented like this because I saw it in the spec too late)
   input wire parity_fault_injection, //0 for no fault, 1 for fault
-  output wire PARITYERR,
-  input wire [17:0] baud_rate
+  output wire PARITYERR
+  // input wire [17:0] baud_rate // we use the bottom 8 bits of HADDR to indicate an update to baud rate
 );
+
+
 
 //Internal Signals
   
@@ -137,6 +139,13 @@ module AHBUART(
   assign status = {parity_err_count,14'b0,tx_full,rx_empty};
   
   assign uart_irq = ~rx_empty; 
+
+  reg [17:0] baud_rate;
+  wire set_baud_rate;
+
+  initial baud_rate = 18'd19200;
+  assign set_baud_rate = (last_HADDR[7:0] != 8'b0) &last_HWRITE & last_HSEL;
+
   
    BAUDGEN uBAUDGEN(
     .clk(HCLK),

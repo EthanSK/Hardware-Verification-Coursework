@@ -36,8 +36,7 @@ module ahb_uart_testbench
 
         .PARITYSEL(_if.PARITYSEL),
         .parity_fault_injection(_if.parity_fault_injection),
-        .PARITYERR(_if.PARITYERR),
-        .baud_rate(BAUD_RATE)
+        .PARITYERR(_if.PARITYERR)
         );
 
     initial begin

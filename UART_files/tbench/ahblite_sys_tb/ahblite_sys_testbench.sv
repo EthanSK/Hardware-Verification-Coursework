@@ -23,7 +23,7 @@ AHBLITE_SYS dut(
 );
 
 BAUDGEN 
-#(.CLOCK_HZ(25_000_000))
+#(.CLOCK_HZ(50_000_000))
 uBAUDGEN(
     .clk(slow_clk),
     .resetn(_if.RESETn),
@@ -42,7 +42,7 @@ initial
         _if.baud_rate = BAUD_RATE;
         _if.RESETn=0;
         _if.RsRx <= 1'b1; //put on stop bit
-         #60 _if.RESETn=1;
+         #40 _if.RESETn=1;
 
         t.env.vif = _if;
         fork

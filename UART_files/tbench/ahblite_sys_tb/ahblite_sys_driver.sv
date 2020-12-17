@@ -16,9 +16,8 @@ class ahblite_sys_driver
             drv_mbx.get(t); //blocks until next item is present
             t.print("Driver");
             vif.RsRx <= 0; //start bit
-            @(posedge vif.clk);
-
-            for(int i = 0; i < 8; i++) @(posedge vif.baud_tick); //might not need this
+ 
+            for(int i = 0; i < 16; i++) @(posedge vif.baud_tick); //hold in start bit
 
             for (int i = 0; i < DATA_SIZE; i++ ) begin
                 vif.RsRx <= t.d_in[i];                
@@ -27,10 +26,10 @@ class ahblite_sys_driver
             //send parity bit (hardcoded as odd parity in ahblite sys)
             
             vif.RsRx <= ~^t.d_in; //generate odd parity
-            @ (posedge vif.baud_tick); 
+            for(int i = 0; i < 16; i++) @(posedge vif.baud_tick); //hold parity for 16            
 
             vif.RsRx <= 1; //stop bit
-            @ (posedge vif.baud_tick); 
+            for(int i = 0; i < 16; i++) @(posedge vif.baud_tick); //hold stop for 16
             tr_mbx.put(t);
             ->drv_done;  
             

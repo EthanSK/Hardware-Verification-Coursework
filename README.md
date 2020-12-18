@@ -4,7 +4,7 @@ The testbenches can be built using `scripts/build_all.sh`
 
 ## Verification Plan
 
-We wrote a verification plan outlining the steps we plan on testing and verifying. 
+We wrote a verification plan outlining the steps we plan on testing and verifying. It is in `VerificationPlan.pdf`
 
 ## Modifications
 

@@ -34,4 +34,3 @@
 - Drive transactions through the RsRx terminal of an AHBLITE SYS that is running an assembler program that waits for the receive buffer to have content, and sends the value back through the UART.
 - Monitor the output of the RsTx terminal and check that it matches what was sent in.
 
-## Assertions

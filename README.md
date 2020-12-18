@@ -4,7 +4,7 @@ The testbenches can be built using `scripts/build_all.sh`
 
 ## Verification Plan
 
-We wrote a verification plan outlining the steps we plan on testing and verifying. This can be found in `VERIFICATION_PLAN.md`
+We wrote a verification plan outlining the steps we plan on testing and verifying. 
 
 ## Modifications
 
@@ -42,32 +42,32 @@ We tested the entire AHBUART as a whole. We fed input through HWDATA, then once 
 
 Note that we test to see if overall transmission worked at the RsTx terminal as well as at HRDATA
 
-Source: `/UART_files/tbench/ahb_uart_tb`   
+Source: `/UART_files/tbench/ahb_uart_tb`     
 Logs: `testbench_logs/ahb_uart.txt`
 
 ## AHBLITE SYS Integration test
 
 We tested the functionality of the AHBUART as a peripheral of the whole AHBLITE SYS. In assembly, we wait until the receive buffer is not empty, and if so, read the next value and transmit it back out. We then monitor that transmitted output in our testbench and check it against the driven input to Rx terminal. We added some functional coverage to ensure all edge cases that would occur internally were triggered.
 
-Source: `UART_files/tbench/ahblite_sys_tb`
-Logs: `testbench_logs/ahblite_sys_tb.txt`
-Assembly: `UART_files/src/cm0dsasm_UART.s`
+Source: `UART_files/tbench/ahblite_sys_tb`  
+Logs: `testbench_logs/ahblite_sys_tb.txt`  
+Assembly: `UART_files/src/cm0dsasm_UART.s`  
 
 
 ## Coverage
 We wrote covergroups for each testbench as outlined in the verification plan. The covergroups can be found in the `<dut>_scoreboard.sv` of each testbench mentioned above. Each of these files has both code and functional coverage reports:
 
-AHBUART: `coverage/ahb_uart_tb.txt`   
+AHBUART: `coverage/ahb_uart_tb.txt`    
 
-AHBLITE SYS: `coverage/ahblite_sys_tb.txt`   
+AHBLITE SYS: `coverage/ahblite_sys_tb.txt`    
 
 Parity Check: `coverage/parity_check.txt`  
  
-Parity Gen: `coverage/parity_gen.txt`  
+Parity Gen: `coverage/parity_gen.txt`   
 
-Uart Rx: `coverage/uart_rx.txt`
+Uart Rx: `coverage/uart_rx.txt`  
 
-Uart Tx: `coverage/uart_tx.txt`
+Uart Tx: `coverage/uart_tx.txt`  
 
 ## Assertions
 We wrote assertions for some important components of the AHBUART. The tcl assertions and Jasper Gold logs are in the files below:
@@ -81,13 +81,13 @@ TCL: `UART_files/assertions/fifo.tcl`
 JasperGold: `jaspergold_logs/fifo.txt`
 
 #### AHB UART
-TCL: `UART_files/assertions/ahbuart.tcl`   
+TCL: `UART_files/assertions/ahbuart.tcl`     
 JasperGold: `testbench_logs/ahbuart.txt`
 
 #### Uart Tx
-TCL: `UART_files/assertions/uart_tx.tcl`
+TCL: `UART_files/assertions/uart_tx.tcl`  
 JasperGold: `jaspergold_logs/uart_tx.txt`
 
 #### Uart Rx
-TCL: `UART_files/assertions/uart_rx.tcl`
+TCL: `UART_files/assertions/uart_rx.tcl`  
 JasperGold: `jaspergold_logs/uart_rx.txt`

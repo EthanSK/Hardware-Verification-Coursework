@@ -1,4 +1,4 @@
-# Script for multiplier example in JasperGold
+# Ethan Sarif-Kattan & LH Lee
 clear -all
 analyze -clear
 analyze -v2k rtl/ahb_uart/fifo.v

@@ -1,3 +1,4 @@
+# Ethan Sarif-Kattan & LH Lee
 clear -all
 analyze -clear
 analyze -v2k rtl/ahb_uart/parity_gen.v

@@ -1,3 +1,5 @@
+//Ethan Sarif-Kattan & LH Lee
+
 interface parity_gen_if(input bit clk, input bit baud_tick);
     logic [7:0] d_in;
     logic [8:0] d_out;
